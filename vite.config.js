@@ -5,6 +5,9 @@ const config = {
 	plugins: [sveltekit()],
 	test: {
 		include: ['src/**/*.{test,spec}.{js,ts}']
+	},
+	ssr: {
+		noExternal: ["@lucia-auth/sveltekit"]
 	}
 };
 
