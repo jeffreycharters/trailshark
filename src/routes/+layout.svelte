@@ -83,9 +83,10 @@
 						{/each}
 					</ul>
 				</div>
-				<div class="dropdown dropdown-end mr-4 hidden lg:block">
+
+				<div class="dropdown dropdown-end mx-4 hidden lg:block">
 					{#each menuLinks as link}
-						<a href={link.href} class="btn btn-primary btn-outline">{link.text}</a>
+						<a href={link.href} class="btn btn-primary btn-outline btn-sm">{link.text}</a>
 					{/each}
 				</div>
 			{/if}

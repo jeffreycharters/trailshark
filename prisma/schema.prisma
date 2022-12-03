@@ -11,12 +11,13 @@ datasource db {
 }
 
 model User {
-  id              String    @id @unique @default(cuid())
-  provider_id     String    @unique
+  id              String        @id @unique @default(cuid())
+  provider_id     String        @unique
   hashed_password String?
-  username        String    @unique
-  isAdmin         Boolean   @default(false)
+  username        String        @unique
+  isAdmin         Boolean       @default(false)
   session         Session[]
+  TrailSystem     TrailSystem[]
 
   @@map("user")
 }
@@ -30,4 +31,14 @@ model Session {
 
   @@index([user_id])
   @@map("session")
+}
+
+model TrailSystem {
+  id        String    @id @unique @default(cuid())
+  name      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+  addedBy   User      @relation(fields: [userId], references: [id])
+  userId    String
+  slug      String?
 }

@@ -10,8 +10,8 @@
 		Sign up for TrailShark!
 	</h2>
 
-	<div class="text-center mt-1">
-		Or <a href="/register" class="text-primary font-medium hover:cursor-pointer hover:underline"
+	<div class="text-center mt-4">
+		Or <a href="/login" class="text-primary font-medium hover:cursor-pointer hover:underline mt-4"
 			>log in</a
 		>
 		if you already have an account.

@@ -1,17 +1,8 @@
 import { invalid, type Actions } from '@sveltejs/kit';
 import { auth } from '$lib/server/lucia';
-import { redirect } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
-
-export const load: PageServerLoad = async ({ locals }) => {
-    const session = await locals.getSession();
-    if (session) throw redirect(302, '/');
-    return {};
-};
-
 
 export const actions: Actions = {
-    login: async ({ request, locals }) => {
+    default: async ({ request, locals }) => {
         const form = await request.formData();
         const email = form.get('email');
         const password = form.get('password');
@@ -24,6 +15,9 @@ export const actions: Actions = {
             const user = await auth.authenticateUser('email', email, password);
             const session = await auth.createSession(user.userId);
             locals.setSession(session);
+            return {
+                success: true
+            }
         } catch (e) {
             const error = e as Error;
             if (
