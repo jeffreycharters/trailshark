@@ -33,7 +33,7 @@
 					<!-- svelte-ignore a11y-label-has-associated-control -->
 					<label tabindex="0" class="avatar placeholder cursor-pointer">
 						<div class="w-8 h-8 mask mask-squircle bg-base-200 text-accent-focus">
-							<span class="text-sm font-bold">JC</span>
+							<span class="text-sm font-bold">{$user.username.slice(0, 2).toUpperCase()}</span>
 						</div>
 					</label>
 					<!-- svelte-ignore a11y-no-noninteractive-tabindex -->

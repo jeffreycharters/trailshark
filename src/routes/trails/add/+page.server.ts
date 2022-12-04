@@ -1,11 +1,9 @@
 import { addTrailSystem, getLatestTrailSystems } from '$lib/server/api/trails';
 import { invalid, redirect } from '@sveltejs/kit';
-import type { Actions, PageServerLoad } from './$types';
+import type { Actions } from './$types';
 
-export const load: PageServerLoad = async ({ locals }) => {
-    const session = await locals.getSessionUser()
-    const getApprovedOnly = !session.user?.isAdmin;
-    const latestSystems = getLatestTrailSystems(3, getApprovedOnly);
+export const load = () => {
+    const latestSystems = getLatestTrailSystems(3);
     return {
         latestSystems
     }
@@ -14,7 +12,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 export const actions: Actions = {
     default: async ({ locals, request }) => {
         const body = Object.fromEntries(await request.formData());
-        if (body.name.length <= 2) return { message: "Name must be greater than 2 characters." }
+
 
         try {
             const session = await locals.getSessionUser();
@@ -22,16 +20,13 @@ export const actions: Actions = {
 
             if (!body.name) throw invalid(400, { message: 'Name is required' })
             const newTrail = await addTrailSystem(body.name.toString(), session.user.userId)
-
             return {
                 trail: newTrail,
                 success: true
             }
-        } catch (err) {
-            const error = err as Error;
-            if (error.message.includes("unique")) return ({ message: 'System already exists!' })
+        } catch (_) {
             return {
-                message: error.message
+                message: 'Could not add new trail system'
             }
         }
 

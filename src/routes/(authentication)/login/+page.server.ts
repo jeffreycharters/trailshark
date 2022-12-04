@@ -3,9 +3,9 @@ import { auth } from '$lib/server/lucia';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals }) => {
-    const session = locals.getSession();
+    const session = await locals.getSession();
     return {
-        hasSession: true
+        hasSession: !!session
     }
 }
 

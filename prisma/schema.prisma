@@ -35,11 +35,12 @@ model Session {
 
 model TrailSystem {
   id         String    @id @unique @default(cuid())
-  name       String
+  name       String    @unique
   createdAt  DateTime  @default(now())
   updatedAt  DateTime?
   addedBy    User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
   userId     String?
   slug       String?
   isApproved Boolean   @default(false)
+  deleted    Boolean   @default(false)
 }

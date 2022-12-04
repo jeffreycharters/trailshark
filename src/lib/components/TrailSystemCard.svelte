@@ -9,16 +9,18 @@
 	const toggleApproval = async (system: TrailSystem) => {
 		const res = await fetch('/api/v1/trails/systems/', {
 			method: 'PATCH',
-			body: JSON.stringify({ system }),
+			body: JSON.stringify({ isApproved: system.isApproved, systems: [system.id] }),
 			headers: {
 				'content-type': 'application/json'
 			}
 		});
 
-		const updatedSystem = await res.json();
-		dispatch('toggleApproved', {
-			id: updatedSystem.id
-		});
+		const updateCount = await res.json();
+		if (updateCount.count === 1) {
+			dispatch('toggleApproved', {
+				id: system.id
+			});
+		}
 	};
 </script>
 
@@ -28,6 +30,6 @@
 	</div>
 
 	<button class="btn btn-xs btn-primary" on:click={() => toggleApproval(system)}
-		>{system.isApproved ? 'Approve' : 'Unapprove'}</button
+		>{system.isApproved ? 'Unapprove' : 'Approve'}</button
 	>
 </div>

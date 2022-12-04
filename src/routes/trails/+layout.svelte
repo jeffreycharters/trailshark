@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { getUser } from '@lucia-auth/sveltekit/client';
+	import { fly } from 'svelte/transition';
 
 	let visible = false;
 
@@ -24,7 +25,7 @@
 			<slot />
 		</div>
 	</div>
-	<div class="drawer-side lg:border-r-2">
+	<div class="drawer-side lg:border-r-2" in:fly={{ x: -500, duration: 250 }}>
 		<label for="trails-menu-drawer" class="drawer-overlay" />
 		<ul class="menu p-4 w-80 bg-base-200 text-base-content">
 			<!-- Sidebar content here -->
@@ -32,6 +33,7 @@
 				<a href="/trails/status/add" on:click={closeModal}>Add Status Update</a>
 			</li>
 			<li><a href="/trails/systems/add" on:click={closeModal}>Add Trail System</a></li>
+			<li><a href="/trails/systems/add" on:click={closeModal}>Add Trail</a></li>
 			{#if $user?.isAdmin}
 				<div class="divider" />
 				<li>Admin Shit</li>

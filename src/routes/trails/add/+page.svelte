@@ -4,15 +4,14 @@
 	export let form: ActionData;
 	export let data: PageData;
 	let { latestSystems } = data;
-	let name = '';
 </script>
 
 <div class="grid grid-cols-12 gap-4">
 	<div class="col-start-1 col-span-7">
-		<h2 class="text-lg font-bold">Add a trail system</h2>
+		<h2 class="text-lg font-bold">Add a Trail!</h2>
 
 		<div class="mt-4">
-			Before you fill out this form, please make sure that the system doesn't exist under a similar
+			Before you fill out this form, please make sure that the trail doesn't exist under a similar
 			name by using the <a href="/trails/systems/search" class="link link-primary"
 				>Trail system search</a
 			>.
@@ -28,7 +27,6 @@
 					<span class="label-text font-semibold">Trail System name</span>
 				</label>
 				<input
-					bind:value={name}
 					name="name"
 					type="text"
 					placeholder="Don't include &quot;trails&quot in the name"
@@ -39,9 +37,7 @@
 					<span class="label-text-alt text-error">{form?.message ? form.message : ''}</span>
 				</label>
 			</div>
-			<button class="btn btn-primary mt-2 w-full max-w-md {name.length <= 2 ? 'btn-disabled' : ''}"
-				>Submit for Approval</button
-			>
+			<button class="btn btn-primary mt-2 w-full max-w-md">Submit for Approval</button>
 		</form>
 	</div>
 	<div class="col-start-9 col-span-3">

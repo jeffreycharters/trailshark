@@ -3,9 +3,9 @@ import { json } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types"
 
 export const PATCH: RequestHandler = async ({ request }) => {
-    const { system } = await request.json();
+    const { isApproved, systems } = await request.json();
 
-    const updatedSystem = await toggleTrailSystemApproval(system);
+    const updatedSystem = await toggleTrailSystemApproval(isApproved, systems);
 
     return json(updatedSystem);
 }
