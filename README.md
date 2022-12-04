@@ -1,38 +1,25 @@
-# create-svelte
+# Trailshark
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+## Introduction
+I want to throw together a decent web application to show that I'm only somewhat a hack and not a total hack.
 
-## Creating a project
+The purpose here is to crowdsource mountain bike trail status updates. Well, that's the initial purpose, then I hope to expand from there (see [longer-term expectations](#longer-term-expectations)). No active iterations of the site yet but I'll be sure to update this document with a URL when one becomes available.
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Tech Stack
+- Database: [Prisma ORM](https://prisma.io) (with SQLite as database).
+- Backend: [Sveltekit](https://kit.svelte.dev).
+- Frontend: [Sveltekit](https://kit.svelte.dev).
+- Other frameworks: [Tailwind](https://trailwindcss.com), [DaisyUI](https://daisyui.com).
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+## Longer-term expectations
+- [ ] Trail status updates.
+- [ ] Ride-calling + attendance.
+- [ ] Open-source trail API.
+- [ ] Organization hour tracking (volunteers, etc).
+- [ ] Organization member tracking, memberships.
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+## Hold myself accountable
+- [ ] writing unit/e2e tests?
+- [ ] error handling?
 
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+For what it's worth, I actually went through the hassle of figuring out how to write unit tests using [Vitest](https://vitest.dev). The official Prisma docs really want you to mock the db calls, but I found it much easier to simply update the `package.json` scripts and some `.env` files to create a separate testing database.
