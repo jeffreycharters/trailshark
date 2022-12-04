@@ -3,15 +3,20 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"dev": "vite dev",
+		"dev": "dotenv -e .env.dev vite dev",
 		"build": "vite build",
 		"preview": "vite preview",
 		"test": "playwright test",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-		"test:unit": "vitest",
+		"test:unit": "rm prisma/test.db && npm run pushdb:test && dotenv -e .env.test vitest",
+		"test:unit-nodb": "npm run pushdb:test && dotenv -e .env.test vitest",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
-		"format": "prettier --plugin-search-dir . --write ."
+		"format": "prettier --plugin-search-dir . --write .",
+		"pushdb:test": "dotenv -e .env.test prisma db push",
+		"pushdb:dev": "dotenv -e .env.dev prisma db push",
+		"seedb:dev": "dotenv -e .env.dev prisma studio",
+		"seedb:test": "dotenv -e .env.test prisma studio"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.28.1",
@@ -42,6 +47,7 @@
 		"@lucia-auth/sveltekit": "^0.3.0",
 		"@prisma/client": "^4.7.0",
 		"daisyui": "^2.42.1",
+		"dotenv-cli": "^6.0.0",
 		"lucia-auth": "^0.2.0",
 		"slugify": "^1.6.5"
 	}

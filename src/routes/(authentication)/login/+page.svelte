@@ -1,13 +1,13 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
-	import { afterNavigate, goto, invalidateAll } from '$app/navigation';
-	import type { ActionData } from './$types';
+	import { afterNavigate, invalidateAll } from '$app/navigation';
+	import type { ActionData, PageData } from './$types';
 
 	export let form: ActionData;
+	export let data: PageData;
 
 	// This is to reset the navbar after logging in.
 	afterNavigate(() => {
-		if (form?.success) {
+		if (form?.success || data.hasSession) {
 			invalidateAll();
 			window.location.href = '/trails/latest';
 		}

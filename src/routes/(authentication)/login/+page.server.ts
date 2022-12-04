@@ -1,5 +1,13 @@
 import { invalid, type Actions } from '@sveltejs/kit';
 import { auth } from '$lib/server/lucia';
+import type { PageServerLoad } from './$types';
+
+export const load: PageServerLoad = async ({ locals }) => {
+    const session = locals.getSession();
+    return {
+        hasSession: true
+    }
+}
 
 export const actions: Actions = {
     default: async ({ request, locals }) => {

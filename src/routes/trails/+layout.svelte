@@ -1,9 +1,13 @@
 <script lang="ts">
+	import { getUser } from '@lucia-auth/sveltekit/client';
+
 	let visible = false;
 
 	const closeModal = () => {
 		visible = false;
 	};
+
+	const user = getUser();
 </script>
 
 <div class="drawer drawer-mobile">
@@ -28,6 +32,10 @@
 				<a href="/trails/status/add" on:click={closeModal}>Add Status Update</a>
 			</li>
 			<li><a href="/trails/systems/add" on:click={closeModal}>Add Trail System</a></li>
+			{#if $user?.isAdmin}
+				<div class="divider" />
+				<li>Admin Shit</li>
+			{/if}
 		</ul>
 	</div>
 </div>
