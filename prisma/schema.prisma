@@ -18,6 +18,7 @@ model User {
   isAdmin         Boolean       @default(false)
   session         Session[]
   TrailSystem     TrailSystem[]
+  Trail           Trail[]
 
   @@map("user")
 }
@@ -37,10 +38,24 @@ model TrailSystem {
   id         String    @id @unique @default(cuid())
   name       String    @unique
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
+  updatedAt  DateTime? @updatedAt
   addedBy    User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
   userId     String?
   slug       String?
   isApproved Boolean   @default(false)
   deleted    Boolean   @default(false)
+  Trail      Trail[]
+}
+
+model Trail {
+  id            String      @id @unique @default(cuid())
+  name          String
+  trailSystem   TrailSystem @relation(fields: [trailSystemId], references: [id])
+  trailSystemId String
+  addedBy       User        @relation(fields: [userId], references: [id])
+  userId        String
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime?   @updatedAt
+
+  @@unique([name, trailSystemId])
 }

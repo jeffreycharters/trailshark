@@ -30,10 +30,9 @@
 		<ul class="menu p-4 w-80 bg-base-200 text-base-content">
 			<!-- Sidebar content here -->
 			<li>
-				<a href="/trails/status/add" on:click={closeModal}>Add Status Update</a>
+				<a href="/trails/status" on:click={closeModal}>Add Status Update</a>
 			</li>
-			<li><a href="/trails/systems/add" on:click={closeModal}>Add Trail System</a></li>
-			<li><a href="/trails/systems/add" on:click={closeModal}>Add Trail</a></li>
+			<li><a href="/trails/systems/" on:click={closeModal}>Trail Systems</a></li>
 			{#if $user?.isAdmin}
 				<div class="divider" />
 				<li>Admin Shit</li>

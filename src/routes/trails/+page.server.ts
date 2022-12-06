@@ -1,10 +1,12 @@
-import { addTrailSystem, getLatestTrailSystems } from '$lib/server/api/trails';
+import { addTrailSystem, getAllTrailSystems, getLatestTrailSystems } from '$lib/server/api/trails';
 import { invalid, redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
 
 export const load = () => {
     const latestSystems = getLatestTrailSystems(3);
+    const trailSystemList = getAllTrailSystems();
     return {
+        trailSystemList,
         latestSystems
     }
 }

@@ -1,5 +1,4 @@
 import { prisma } from '$lib/server/db'
-import { getUser } from '@lucia-auth/sveltekit/client';
 import type { TrailSystem } from '@prisma/client';
 import slugify from 'slugify';
 
@@ -29,6 +28,30 @@ export const getLatestTrailSystems = async (count: number, approvedOnly: boolean
     return latestTrails;
 }
 
+export const getTrailSystemPage = async (perPage: number = 25, page: number = 1) => {
+    const systems = await prisma.trailSystem.findMany({
+        skip: (page - 1) * perPage,
+        take: +perPage,
+        orderBy: {
+            name: "asc"
+        }
+    })
+
+    return systems;
+};
+
+export const getAllTrailSystems = async (approvedOnly: boolean = true) => {
+    const trailSystems = await prisma.trailSystem.findMany({
+        where: {
+            isApproved: approvedOnly ? true : undefined
+        },
+        orderBy: {
+            slug: "desc"
+        }
+    })
+    return trailSystems;
+}
+
 export const toggleTrailSystemApproval = async (isApproved: boolean, systems: string[]) => {
     const updateCount = await prisma.trailSystem.updateMany({
         where: {
@@ -40,4 +63,22 @@ export const toggleTrailSystemApproval = async (isApproved: boolean, systems: st
         }
     });
     return updateCount;
+}
+
+export interface TrailAddParams {
+    name: string;
+    trailSystemId: string;
+    userId: string;
+}
+
+export const addTrail = async (params: TrailAddParams) => {
+    const { name, trailSystemId, userId } = params
+    const newTrail = await prisma.trail.create({
+        data: {
+            name, trailSystemId, userId
+        }
+    })
+    if (!newTrail) throw new Error("Couldn't create new trail");
+
+    return newTrail;
 }

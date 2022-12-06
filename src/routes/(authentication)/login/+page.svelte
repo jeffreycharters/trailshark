@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { afterNavigate, invalidateAll } from '$app/navigation';
 	import type { ActionData, PageData } from './$types';
+	import { loginRedirectUrl } from '$lib/constants';
 
 	export let form: ActionData;
 	export let data: PageData;
@@ -9,7 +10,7 @@
 	afterNavigate(() => {
 		if (form?.success || data.hasSession) {
 			invalidateAll();
-			window.location.href = '/trails/latest';
+			window.location.href = loginRedirectUrl;
 		}
 	});
 </script>

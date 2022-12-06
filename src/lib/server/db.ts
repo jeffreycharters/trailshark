@@ -3,11 +3,11 @@ import { PrismaClient } from "@prisma/client";
 
 let options = {};
 
-if (dev) {
-    options = {
-        log: ['query', 'info', 'warn', 'error'],
-    }
-}
+// if (dev) {
+//     options = {
+//         log: ['query', 'info', 'warn', 'error'],
+//     }
+// }
 
 export const prisma = new PrismaClient(options);
 

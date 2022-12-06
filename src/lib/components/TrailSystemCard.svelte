@@ -1,10 +1,12 @@
 <script lang="ts">
+	import { getUser } from '@lucia-auth/sveltekit/client';
 	import type { TrailSystem } from '@prisma/client';
 	import { createEventDispatcher } from 'svelte';
 
 	export let system: TrailSystem;
+	let approved = system.isApproved;
 
-	const dispatch = createEventDispatcher();
+	const user = getUser();
 
 	const toggleApproval = async (system: TrailSystem) => {
 		const res = await fetch('/api/v1/trails/systems/', {
@@ -14,12 +16,10 @@
 				'content-type': 'application/json'
 			}
 		});
-
 		const updateCount = await res.json();
+
 		if (updateCount.count === 1) {
-			dispatch('toggleApproved', {
-				id: system.id
-			});
+			approved = !approved;
 		}
 	};
 </script>
@@ -29,7 +29,9 @@
 		<a href="/trails/systems/{system.slug}">{system.name}</a>
 	</div>
 
-	<button class="btn btn-xs btn-primary" on:click={() => toggleApproval(system)}
-		>{system.isApproved ? 'Unapprove' : 'Approve'}</button
-	>
+	{#if $user?.isAdmin}
+		<button class="btn btn-xs btn-primary" on:click={() => toggleApproval(system)}
+			>{approved ? 'Unapprove' : 'Approve'}</button
+		>
+	{/if}
 </div>
