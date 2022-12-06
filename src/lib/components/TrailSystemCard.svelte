@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { getUser } from '@lucia-auth/sveltekit/client';
 	import type { TrailSystem } from '@prisma/client';
-	import { createEventDispatcher } from 'svelte';
 
 	export let system: TrailSystem;
 	let approved = system.isApproved;

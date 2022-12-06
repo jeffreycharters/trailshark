@@ -1,10 +1,11 @@
 import { prisma } from '$lib/server/db'
 import type { TrailSystem } from '@prisma/client';
+import { invalid } from '@sveltejs/kit';
 import slugify from 'slugify';
 
 
-export const addTrailSystem = async (name: string, userId: string): Promise<TrailSystem | null> => {
-    if (name.length <= 2) throw new Error("Name too short");
+export const addTrailSystem = async (name: string, userId: string) => {
+    if (name.length <= 2) return invalid(400, { mesage: "Name too short" });
 
     const newTrailSystem = await prisma.trailSystem.create({
         data: {
@@ -13,6 +14,7 @@ export const addTrailSystem = async (name: string, userId: string): Promise<Trai
             slug: slugify(name, { lower: true })
         }
     })
+
 
     return newTrailSystem;
 }

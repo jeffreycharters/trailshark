@@ -1,7 +1,6 @@
-import type { ValidationError } from "@sveltejs/kit";
-import { afterAll, afterEach, beforeAll, describe, expect, it } from "vitest";
+import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import { addTrailSystem, toggleTrailSystemApproval } from "./trails";
-import { prisma } from "../db";
+import { prisma } from "$lib/server/db";
 import type { TrailSystem, User } from "@prisma/client";
 
 describe('trail systems', () => {
@@ -14,8 +13,8 @@ describe('trail systems', () => {
             }
         })
     });
-    afterEach(async () => {
-        prisma.trailSystem.deleteMany({})
+    beforeEach(async () => {
+        await prisma.trailSystem.deleteMany({})
     });
 
     afterAll(async () => {
@@ -27,7 +26,7 @@ describe('trail systems', () => {
             name: "New Trail",
             userId: user.id
         }
-        const addedSystem = await addTrailSystem(newSystem.name, newSystem.userId);
+        const addedSystem = await addTrailSystem(newSystem.name, newSystem.userId) as unknown as TrailSystem;
 
         expect(addedSystem?.name).toEqual(newSystem.name);
         expect(addedSystem?.userId).toEqual(user.id);
@@ -39,7 +38,7 @@ describe('trail systems', () => {
             userId: user.id
         }
         const addedSystem = await addTrailSystem(newSystem.name, newSystem.userId);
-        expect(addedSystem).toBe(null);
+        expect(addedSystem).toThrowError(Error)
     })
 
     it('toggling isApproved works properly', async () => {
@@ -47,13 +46,13 @@ describe('trail systems', () => {
             name: "New Trail",
             userId: user.id
         }
-        const addedSystem = await addTrailSystem(newSystem.name, newSystem.userId);
+        const addedSystem = await addTrailSystem(newSystem.name, newSystem.userId) as unknown as TrailSystem;
 
         if (!addedSystem) return;
 
-        const updatedSystem = await toggleTrailSystemApproval(addedSystem);
+        const payload = await toggleTrailSystemApproval(addedSystem.isApproved, [addedSystem.id]);
 
-        expect(updatedSystem.isApproved).toEqual(!addedSystem.isApproved);
+        expect(payload.count).toEqual(1);
 
 
     });
