@@ -1,36 +1,36 @@
 <script lang="ts">
-	import LatestTrailSystems from '$lib/components/LatestTrailSystems.svelte';
+	import LatestTrailNetworks from '$lib/components/LatestTrailNetworks.svelte';
 	import type { ActionData, PageData } from './$types';
-	import { trailSystemsPerPage, apiBaseUrl } from '$lib/constants';
+	import { trailNetworksPerPage, apiBaseUrl } from '$lib/constants';
 	import { page } from '$app/stores';
 	export let form: ActionData;
 	export let data: PageData;
-	let { latestSystems, trailSystemList } = data;
+	let { latestSystems, trailNetworkList } = data;
 	let name = '';
 
 	let currentPage = 1;
-	const getMoreSystems = async (trailSystemsPerPage: number, currentPage: number) => {
+	const getMoreSystems = async (trailNetworksPerPage: number, currentPage: number) => {
 		const url = `${
 			$page.url.origin
-		}${apiBaseUrl}/trails/systems/?page=${currentPage.toString()}&per=${trailSystemsPerPage.toString()}`;
+		}${apiBaseUrl}/trails/systems/?page=${currentPage.toString()}&per=${trailNetworksPerPage.toString()}`;
 		const res = await fetch(url);
 		const newTrails = await res.json();
 		console.log(currentPage);
 		return newTrails;
 	};
 
-	const getMoreTrailSystems = async () => {
+	const getMoreTrailNetworks = async () => {
 		++currentPage;
-		const moreSystems = await getMoreSystems(trailSystemsPerPage, currentPage);
-		trailSystemList = [...trailSystemList, ...moreSystems];
+		const moreSystems = await getMoreSystems(trailNetworksPerPage, currentPage);
+		trailNetworkList = [...trailNetworkList, ...moreSystems];
 	};
 </script>
 
-{#each trailSystemList as system (system.id)}
+{#each trailNetworkList as system (system.id)}
 	<div>{system.name}</div>
 {/each}
 
-<div on:click={getMoreTrailSystems} on:keydown={getMoreTrailSystems}>Get more trails</div>
+<div on:click={getMoreTrailNetworks} on:keydown={getMoreTrailNetworks}>Get more trails</div>
 
 <div class="lg:grid grid-cols-12 gap-4">
 	<div class="col-start-1 col-span-7">
@@ -70,6 +70,6 @@
 		</form>
 	</div>
 	<div class="col-start-9 col-span-3 lg:mt-0 mt-16">
-		<LatestTrailSystems {latestSystems} />
+		<LatestTrailNetworks {latestSystems} />
 	</div>
 </div>

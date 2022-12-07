@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { getUser } from '@lucia-auth/sveltekit/client';
-	import type { TrailSystem } from '@prisma/client';
+	import type { TrailNetwork } from '@prisma/client';
 
-	export let system: TrailSystem;
+	export let system: TrailNetwork;
 	let approved = system.isApproved;
 
 	const user = getUser();
 
-	const toggleApproval = async (system: TrailSystem) => {
+	const toggleApproval = async (system: TrailNetwork) => {
 		const res = await fetch('/api/v1/trails/systems/', {
 			method: 'PATCH',
 			body: JSON.stringify({ isApproved: system.isApproved, systems: [system.id] }),

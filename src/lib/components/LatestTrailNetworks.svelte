@@ -1,8 +1,8 @@
 <script lang="ts">
-	import type { TrailSystem } from '@prisma/client';
-	import TrailSystemCard from './TrailSystemCard.svelte';
+	import type { TrailNetwork } from '@prisma/client';
+	import TrailNetworkCard from './TrailNetworkCard.svelte';
 
-	export let latestSystems: TrailSystem[] = [];
+	export let latestSystems: TrailNetwork[] = [];
 	export let shadow: boolean = true;
 </script>
 
@@ -10,6 +10,6 @@
 	<h2 class="text-xl font-bold mb-4">Latest Trail Systems</h2>
 
 	{#each latestSystems as system (system.id)}
-		<TrailSystemCard {system} />
+		<TrailNetworkCard {system} />
 	{/each}
 </div>

@@ -1,12 +1,12 @@
-import { addTrailSystem, getAllTrailSystems, getLatestTrailSystems } from '$lib/server/api/trails';
+import { addTrailNetwork, getAllTrailNetworks, getLatestTrailNetworks } from '$lib/server/api/trails';
 import { invalid, redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
 
 export const load = () => {
-    const latestSystems = getLatestTrailSystems(3);
-    const trailSystemList = getAllTrailSystems();
+    const latestSystems = getLatestTrailNetworks(3);
+    const trailNetworkList = getAllTrailNetworks();
     return {
-        trailSystemList,
+        trailNetworkList,
         latestSystems
     }
 }
@@ -21,7 +21,7 @@ export const actions: Actions = {
             if (!session?.user) throw redirect(302, "/login");
 
             if (!body.name) throw invalid(400, { message: 'Name is required' })
-            const newTrail = await addTrailSystem(body.name.toString(), session.user.userId)
+            const newTrail = await addTrailNetwork(body.name.toString(), session.user.userId)
             return {
                 trail: newTrail,
                 success: true

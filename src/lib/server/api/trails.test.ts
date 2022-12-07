@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
-import { addTrailSystem, toggleTrailSystemApproval } from "./trails";
+import { addTrailNetwork, toggleTrailNetworkApproval } from "./trails";
 import { prisma } from "$lib/server/db";
-import type { TrailSystem, User } from "@prisma/client";
+import type { TrailNetwork, User } from "@prisma/client";
 
 describe('trail systems', () => {
     let user: User;
@@ -14,7 +14,7 @@ describe('trail systems', () => {
         })
     });
     beforeEach(async () => {
-        await prisma.trailSystem.deleteMany({})
+        await prisma.trailNetwork.deleteMany({})
     });
 
     afterAll(async () => {
@@ -26,7 +26,7 @@ describe('trail systems', () => {
             name: "New Trail",
             userId: user.id
         }
-        const addedSystem = await addTrailSystem(newSystem.name, newSystem.userId) as unknown as TrailSystem;
+        const addedSystem = await addTrailNetwork(newSystem.name, newSystem.userId) as unknown as TrailNetwork;
 
         expect(addedSystem?.name).toEqual(newSystem.name);
         expect(addedSystem?.userId).toEqual(user.id);
@@ -37,7 +37,7 @@ describe('trail systems', () => {
             name: "",
             userId: user.id
         }
-        const addedSystem = await addTrailSystem(newSystem.name, newSystem.userId);
+        const addedSystem = await addTrailNetwork(newSystem.name, newSystem.userId);
         expect(addedSystem).toThrowError(Error)
     })
 
@@ -46,11 +46,11 @@ describe('trail systems', () => {
             name: "New Trail",
             userId: user.id
         }
-        const addedSystem = await addTrailSystem(newSystem.name, newSystem.userId) as unknown as TrailSystem;
+        const addedSystem = await addTrailNetwork(newSystem.name, newSystem.userId) as unknown as TrailNetwork;
 
         if (!addedSystem) return;
 
-        const payload = await toggleTrailSystemApproval(addedSystem.isApproved, [addedSystem.id]);
+        const payload = await toggleTrailNetworkApproval(addedSystem.isApproved, [addedSystem.id]);
 
         expect(payload.count).toEqual(1);
 

@@ -11,14 +11,14 @@ datasource db {
 }
 
 model User {
-  id              String        @id @unique @default(cuid())
-  provider_id     String        @unique
+  id              String         @id @unique @default(cuid())
+  provider_id     String         @unique
   hashed_password String?
-  username        String        @unique
-  isAdmin         Boolean       @default(false)
+  username        String         @unique
+  isAdmin         Boolean        @default(false)
   session         Session[]
-  TrailSystem     TrailSystem[]
-  Trail           Trail[]
+  trailNetworks   TrailNetwork[]
+  trails          Trail[]
 
   @@map("user")
 }
@@ -34,7 +34,7 @@ model Session {
   @@map("session")
 }
 
-model TrailSystem {
+model TrailNetwork {
   id         String    @id @unique @default(cuid())
   name       String    @unique
   createdAt  DateTime  @default(now())
@@ -48,14 +48,14 @@ model TrailSystem {
 }
 
 model Trail {
-  id            String      @id @unique @default(cuid())
-  name          String
-  trailSystem   TrailSystem @relation(fields: [trailSystemId], references: [id])
-  trailSystemId String
-  addedBy       User        @relation(fields: [userId], references: [id])
-  userId        String
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime?   @updatedAt
+  id             String       @id @unique @default(cuid())
+  name           String
+  trailNetwork   TrailNetwork @relation(fields: [trailNetworkId], references: [id])
+  trailNetworkId String
+  addedBy        User         @relation(fields: [userId], references: [id])
+  userId         String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime?    @updatedAt
 
-  @@unique([name, trailSystemId])
+  @@unique([name, trailNetworkId])
 }

@@ -1,11 +1,11 @@
 <script lang="ts">
-	import LatestTrailSystems from '$lib/components/LatestTrailSystems.svelte';
+	import LatestTrailNetworks from '$lib/components/LatestTrailNetworks.svelte';
 	import type { ActionData, PageData } from './$types';
 
 	export let form: ActionData;
 	export let data: PageData;
-	let { latestSystems, trailSystemList } = data;
-	console.log(trailSystemList);
+	let { latestSystems, trailNetworkList } = data;
+	console.log(trailNetworkList);
 </script>
 
 <div class="grid grid-cols-12 gap-4">
@@ -38,6 +38,6 @@
 		</form>
 	</div>
 	<div class="col-start-9 col-span-3">
-		<LatestTrailSystems {latestSystems} />
+		<LatestTrailNetworks {latestSystems} />
 	</div>
 </div>

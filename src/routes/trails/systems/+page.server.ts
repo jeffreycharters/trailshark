@@ -1,17 +1,17 @@
-import { addTrailSystem, getLatestTrailSystems, getTrailSystemPage } from '$lib/server/api/trails';
+import { addTrailNetwork, getLatestTrailNetworks, getTrailNetworkPage } from '$lib/server/api/trails';
 import { invalid, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals }) => {
     const session = await locals.getSessionUser()
     const getApprovedOnly = !session.user?.isAdmin;
-    const latestSystems = getLatestTrailSystems(3, getApprovedOnly);
+    const latestSystems = getLatestTrailNetworks(3, getApprovedOnly);
     const systemsPerPage = 2;
     let currentPage = 1;
-    const trailSystemList = getTrailSystemPage(systemsPerPage, currentPage);
+    const trailNetworkList = getTrailNetworkPage(systemsPerPage, currentPage);
     return {
         latestSystems,
-        trailSystemList
+        trailNetworkList
     }
 }
 
@@ -25,7 +25,7 @@ export const actions: Actions = {
             if (!session?.user) throw redirect(302, "/login");
 
             if (!body.name) return invalid(400, { message: 'Name is required' })
-            const newTrail = await addTrailSystem(body.name.toString(), session.user.userId)
+            const newTrail = await addTrailNetwork(body.name.toString(), session.user.userId)
 
             return {
                 trail: newTrail,

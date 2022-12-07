@@ -1,13 +1,13 @@
 import { prisma } from '$lib/server/db'
-import type { TrailSystem } from '@prisma/client';
+import type { TrailNetwork } from '@prisma/client';
 import { invalid } from '@sveltejs/kit';
 import slugify from 'slugify';
 
 
-export const addTrailSystem = async (name: string, userId: string) => {
+export const addTrailNetwork = async (name: string, userId: string) => {
     if (name.length <= 2) return invalid(400, { mesage: "Name too short" });
 
-    const newTrailSystem = await prisma.trailSystem.create({
+    const newTrailNetwork = await prisma.trailNetwork.create({
         data: {
             name,
             userId,
@@ -16,11 +16,11 @@ export const addTrailSystem = async (name: string, userId: string) => {
     })
 
 
-    return newTrailSystem;
+    return newTrailNetwork;
 }
 
-export const getLatestTrailSystems = async (count: number, approvedOnly: boolean = true) => {
-    const latestTrails = await prisma.trailSystem.findMany({
+export const getLatestTrailNetworks = async (count: number, approvedOnly: boolean = true) => {
+    const latestTrails = await prisma.trailNetwork.findMany({
         orderBy: {
             createdAt: "desc"
         },
@@ -30,8 +30,8 @@ export const getLatestTrailSystems = async (count: number, approvedOnly: boolean
     return latestTrails;
 }
 
-export const getTrailSystemPage = async (perPage: number = 25, page: number = 1) => {
-    const systems = await prisma.trailSystem.findMany({
+export const getTrailNetworkPage = async (perPage: number = 25, page: number = 1) => {
+    const systems = await prisma.trailNetwork.findMany({
         skip: (page - 1) * perPage,
         take: +perPage,
         orderBy: {
@@ -42,8 +42,8 @@ export const getTrailSystemPage = async (perPage: number = 25, page: number = 1)
     return systems;
 };
 
-export const getAllTrailSystems = async (approvedOnly: boolean = true) => {
-    const trailSystems = await prisma.trailSystem.findMany({
+export const getAllTrailNetworks = async (approvedOnly: boolean = true) => {
+    const trailNetworks = await prisma.trailNetwork.findMany({
         where: {
             isApproved: approvedOnly ? true : undefined
         },
@@ -51,11 +51,11 @@ export const getAllTrailSystems = async (approvedOnly: boolean = true) => {
             slug: "desc"
         }
     })
-    return trailSystems;
+    return trailNetworks;
 }
 
-export const toggleTrailSystemApproval = async (isApproved: boolean, systems: string[]) => {
-    const updateCount = await prisma.trailSystem.updateMany({
+export const toggleTrailNetworkApproval = async (isApproved: boolean, systems: string[]) => {
+    const updateCount = await prisma.trailNetwork.updateMany({
         where: {
             id: { in: systems }
         },
@@ -69,15 +69,15 @@ export const toggleTrailSystemApproval = async (isApproved: boolean, systems: st
 
 export interface TrailAddParams {
     name: string;
-    trailSystemId: string;
+    trailNetworkId: string;
     userId: string;
 }
 
 export const addTrail = async (params: TrailAddParams) => {
-    const { name, trailSystemId, userId } = params
+    const { name, trailNetworkId, userId } = params
     const newTrail = await prisma.trail.create({
         data: {
-            name, trailSystemId, userId
+            name, trailNetworkId, userId
         }
     })
     if (!newTrail) throw new Error("Couldn't create new trail");
