@@ -18,7 +18,7 @@
 
 		<label
 			for="trails-menu-drawer"
-			class="btn btn-outline btn-sm shadow drawer-button lg:hidden fixed bottom-2 right-2"
+			class="btn btn-outline bg-base-100 btn-sm shadow drawer-button lg:hidden fixed bottom-2 right-2"
 			>Open Trails menu</label
 		>
 		<div class="p-4">
@@ -30,12 +30,15 @@
 		<ul class="menu p-4 w-80 bg-base-200 text-base-content">
 			<!-- Sidebar content here -->
 			<li>
-				<a href="/trails/status" on:click={closeModal}>Add Status Update</a>
+				<a href="/trails/status/" on:click={closeModal}>Add Status Update</a>
 			</li>
-			<li><a href="/trails/systems/" on:click={closeModal}>Trail Systems</a></li>
+			<li><a href="/trails/" on:click={closeModal}>Add a Trail</a></li>
+			<li><a href="/trails/networks/" on:click={closeModal}>Trail Networks</a></li>
 			{#if $user?.isAdmin}
 				<div class="divider" />
-				<li>Admin Shit</li>
+				<li>
+					<a href="/adminc/" on:click={closeModal}>Admin Shit</a>
+				</li>
 			{/if}
 		</ul>
 	</div>

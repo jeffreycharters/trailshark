@@ -5,12 +5,12 @@ import type { Actions, PageServerLoad } from './$types';
 export const load: PageServerLoad = async ({ locals }) => {
     const session = await locals.getSessionUser()
     const getApprovedOnly = !session.user?.isAdmin;
-    const latestSystems = getLatestTrailNetworks(3, getApprovedOnly);
-    const systemsPerPage = 2;
+    const latestNetworks = getLatestTrailNetworks(3, getApprovedOnly);
+    const networksPerPage = 2;
     let currentPage = 1;
-    const trailNetworkList = getTrailNetworkPage(systemsPerPage, currentPage);
+    const trailNetworkList = getTrailNetworkPage(networksPerPage, currentPage);
     return {
-        latestSystems,
+        latestNetworks,
         trailNetworkList
     }
 }

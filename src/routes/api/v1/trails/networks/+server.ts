@@ -7,14 +7,14 @@ export const GET: RequestHandler = async ({ url }) => {
     let page: number = url.searchParams.get('page') as unknown as number ?? undefined;
 
     if (isNaN(perPage) || isNaN(page)) throw error(400, { message: "Invalid parameters." });
-    const newSystems = await getTrailNetworkPage(perPage, page);
-    return json(newSystems)
+    const newNetworks = await getTrailNetworkPage(perPage, page);
+    return json(newNetworks)
 }
 
 export const PATCH: RequestHandler = async ({ request }) => {
-    const { isApproved, systems } = await request.json();
+    const { isApproved, networks } = await request.json();
 
-    const updatedSystem = await toggleTrailNetworkApproval(isApproved, systems);
+    const updatedNetwork = await toggleTrailNetworkApproval(isApproved, networks);
 
-    return json(updatedSystem);
+    return json(updatedNetwork);
 }

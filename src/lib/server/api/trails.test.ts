@@ -3,7 +3,7 @@ import { addTrailNetwork, toggleTrailNetworkApproval } from "./trails";
 import { prisma } from "$lib/server/db";
 import type { TrailNetwork, User } from "@prisma/client";
 
-describe('trail systems', () => {
+describe('trail networks', () => {
     let user: User;
     beforeAll(async () => {
         user = await prisma.user.create({

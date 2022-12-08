@@ -31,7 +31,7 @@ export const getLatestTrailNetworks = async (count: number, approvedOnly: boolea
 }
 
 export const getTrailNetworkPage = async (perPage: number = 25, page: number = 1) => {
-    const systems = await prisma.trailNetwork.findMany({
+    const networks = await prisma.trailNetwork.findMany({
         skip: (page - 1) * perPage,
         take: +perPage,
         orderBy: {
@@ -39,7 +39,7 @@ export const getTrailNetworkPage = async (perPage: number = 25, page: number = 1
         }
     })
 
-    return systems;
+    return networks;
 };
 
 export const getAllTrailNetworks = async (approvedOnly: boolean = true) => {
@@ -54,10 +54,10 @@ export const getAllTrailNetworks = async (approvedOnly: boolean = true) => {
     return trailNetworks;
 }
 
-export const toggleTrailNetworkApproval = async (isApproved: boolean, systems: string[]) => {
+export const toggleTrailNetworkApproval = async (isApproved: boolean, networks: string[]) => {
     const updateCount = await prisma.trailNetwork.updateMany({
         where: {
-            id: { in: systems }
+            id: { in: networks }
         },
         data: {
             isApproved,
@@ -75,12 +75,20 @@ export interface TrailAddParams {
 
 export const addTrail = async (params: TrailAddParams) => {
     const { name, trailNetworkId, userId } = params
-    const newTrail = await prisma.trail.create({
-        data: {
-            name, trailNetworkId, userId
-        }
-    })
-    if (!newTrail) throw new Error("Couldn't create new trail");
+    try {
 
-    return newTrail;
+        const newTrail = await prisma.trail.create({
+            data: {
+                name, trailNetworkId, userId
+            }
+        })
+        return newTrail;
+    } catch (err) {
+        const error = err as Error;
+        if (error.message.includes("Unique")) {
+            throw new Error("alreadyExists")
+        }
+        throw new Error("Couldn't create new trail");
+    }
+
 }

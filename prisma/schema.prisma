@@ -11,14 +11,15 @@ datasource db {
 }
 
 model User {
-  id              String         @id @unique @default(cuid())
-  provider_id     String         @unique
+  id              String          @id @unique @default(cuid())
+  provider_id     String          @unique
   hashed_password String?
-  username        String         @unique
-  isAdmin         Boolean        @default(false)
+  username        String          @unique
+  isAdmin         Boolean         @default(false)
   session         Session[]
   trailNetworks   TrailNetwork[]
   trails          Trail[]
+  statusUpdates   NetworkStatus[]
 
   @@map("user")
 }
@@ -35,27 +36,64 @@ model Session {
 }
 
 model TrailNetwork {
-  id         String    @id @unique @default(cuid())
-  name       String    @unique
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime? @updatedAt
-  addedBy    User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  id         String          @id @unique @default(cuid())
+  name       String          @unique
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime?       @updatedAt
+  addedBy    User?           @relation(fields: [userId], references: [id], onDelete: SetNull)
   userId     String?
   slug       String?
-  isApproved Boolean   @default(false)
-  deleted    Boolean   @default(false)
-  Trail      Trail[]
+  isApproved Boolean         @default(false)
+  trails     Trail[]
+  statuses   NetworkStatus[]
 }
 
 model Trail {
-  id             String       @id @unique @default(cuid())
+  id             String        @id @unique @default(cuid())
   name           String
-  trailNetwork   TrailNetwork @relation(fields: [trailNetworkId], references: [id])
+  trailNetwork   TrailNetwork  @relation(fields: [trailNetworkId], references: [id])
   trailNetworkId String
-  addedBy        User         @relation(fields: [userId], references: [id])
+  addedBy        User          @relation(fields: [userId], references: [id])
   userId         String
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime?    @updatedAt
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime?     @updatedAt
+  statuses       TrailStatus[]
 
   @@unique([name, trailNetworkId])
+}
+
+model NetworkStatus {
+  id             String        @id @unique @default(cuid())
+  author         User          @relation(fields: [userId], references: [id])
+  userId         String
+  network        TrailNetwork  @relation(fields: [trailNetworkId], references: [id])
+  trailNetworkId String
+  state          Int
+  comments       String
+  trailStatuses  TrailStatus[]
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime?     @updatedAt
+}
+
+model TrailStatus {
+  id              String        @id @unique @default(cuid())
+  trail           Trail         @relation(fields: [trailId], references: [id])
+  trailId         String
+  networkStatus   NetworkStatus @relation(fields: [networkStatusId], references: [id])
+  networkStatusId String
+  state           Int
+  comments        String
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime?     @updatedAt
+}
+
+model TrailState {
+  id          Int    @id @unique @default(autoincrement())
+  description String @unique
+  textColor   String
+}
+
+model TrailStatusComments {
+  id      String @id @unique @default(cuid())
+  comment String
 }
