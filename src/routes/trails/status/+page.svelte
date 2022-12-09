@@ -1,8 +1,10 @@
 <script lang="ts">
 	import type { ActionData, PageData } from './$types';
-	import { trailStates } from '$lib/constants';
 	import { apiBaseUrl } from '$lib/constants';
 	import { page } from '$app/stores';
+	import type { TrailState } from '@prisma/client';
+
+	export let trailStates: TrailState[];
 
 	export let form: ActionData;
 	export let data: PageData;
@@ -36,15 +38,15 @@
 	>
 		<option disabled selected value="">Choose trail network</option>
 		{#each data.traiNetworks as network}
-			<option value={network.id}>{network.name}</option>
+			<option value={network?.id}>{network?.name}</option>
 		{/each}
 	</select>
 
 	{#if network}
 		<select class="select select-bordered w-full max-w-xs" bind:value={state} name="state">
 			<option disabled selected value="">Overall trail state</option>
-			{#each Object.keys(trailStates) as key}
-				<option value={Number(key)}>{trailStates[Number(key)]}</option>
+			{#each trailStates as state}
+				<option value={state.id}>{state.description}</option>
 			{/each}
 		</select>
 	{/if}

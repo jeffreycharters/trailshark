@@ -1,21 +1,31 @@
 <script lang="ts">
 	import type { ActionData, PageData } from './$types';
+	import { stateEnums } from '$lib/constants';
 
 	export let form: ActionData;
 	export let data: PageData;
 	let colour: string = 'success';
 
-	let stateEnums: Record<string, string> = {
-		successBtn: 'btn-success',
-		warningBtn: 'btn-warning',
-		errorBtn: 'btn-error',
-		successBorder: 'border-success',
-		warningBorder: 'border-warning',
-		errorBorder: 'border-error'
-	};
 </script>
 
-<h3 class="font-bold mb-4">Available Trail States</h3>
+<details>
+	<summary class="font-bold mb-4 cursor-pointer">Trail States</summary>
+
+	<p class="my-4">
+		Trail states are basically Open, Caution or Closed with corresponding traffic signal colours.
+	</p>
+
+	<p class="my-4">
+		I dont foresee the need to change this, but we'll see. These will all be presented as options
+		whenever someone creates either a network or trail status, so try to keep them terse.
+	</p>
+
+	<p class="my-4">
+		Not to be confused with <a href="/adminc/trail/comments/" class="link link-primary"
+			>Trail Comments</a
+		> which can be a bit more verbose and describe particular obstacles, etc.
+	</p>
+</details>
 
 {#each data.trailStates as state}
 	<div class="btn w-full cursor-default my-2 {stateEnums[`${state.textColor}Btn`]}">

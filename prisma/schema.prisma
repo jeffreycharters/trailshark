@@ -88,12 +88,15 @@ model TrailStatus {
 }
 
 model TrailState {
-  id          Int    @id @unique @default(autoincrement())
-  description String @unique
-  textColor   String
+  id                  Int                   @id @unique @default(autoincrement())
+  description         String                @unique
+  textColor           String
+  TrailStatusComments TrailStatusComments[]
 }
 
 model TrailStatusComments {
-  id      String @id @unique @default(cuid())
-  comment String
+  id           String     @id @unique @default(cuid())
+  comment      String
+  state        TrailState @relation(fields: [trailStateId], references: [id])
+  trailStateId Int
 }

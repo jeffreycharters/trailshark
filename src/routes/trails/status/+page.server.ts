@@ -1,11 +1,14 @@
+import { getTrailStates } from "$lib/server/api/statuses";
 import { getAllTrailNetworks } from "$lib/server/api/trails";
 import { invalid, type Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "../$types";
 
 export const load: PageServerLoad = () => {
     const allNetworks = getAllTrailNetworks();
+    const trailStates = getTrailStates();
     return {
-        traiNetworks: allNetworks
+        traiNetworks: allNetworks,
+        trailStates
     }
 }
 

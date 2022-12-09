@@ -10,7 +10,7 @@
 		text: string;
 		href: string;
 	};
-	const menuLinks: Link[] = [{ text: 'Trail Conditions', href: '/trails/latest' }];
+	const menuLinks: Link[] = [{ text: 'Trail Conditions', href: '/trails/latest/' }];
 
 	const user = getUser();
 </script>
@@ -42,7 +42,7 @@
 						class="menu dropdown-content dropdown-end p-2 shadow bg-base-100 rounded-box w-52 mt-4 text-primary-focus border border-base-200"
 					>
 						<li>
-							<a href="/users/settings">Settings</a>
+							<a href="/users/settings/">Settings</a>
 						</li>
 						<li>
 							<button

@@ -35,3 +35,24 @@ export const getTrailStates = async () => {
     })
     return states;
 }
+
+export const addTrailComment = async (comment: string, trailStateId: number) => {
+    const newComment = await prisma.trailStatusComments.create({
+        data: {
+            comment, trailStateId
+        }
+    })
+    return newComment;
+}
+
+export const getTrailComments = async () => {
+    const comments = await prisma.trailStatusComments.findMany({
+        orderBy: {
+            trailStateId: "asc"
+        },
+        include: {
+            state: true
+        }
+    })
+    return comments;
+}
