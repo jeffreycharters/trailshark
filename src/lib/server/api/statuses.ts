@@ -54,5 +54,6 @@ export const getTrailComments = async () => {
             state: true
         }
     })
+
     return comments;
 }

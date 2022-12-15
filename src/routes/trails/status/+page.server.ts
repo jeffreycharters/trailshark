@@ -1,4 +1,4 @@
-import { getTrailStates } from "$lib/server/api/statuses";
+import { getTrailComments, getTrailStates } from "$lib/server/api/statuses";
 import { getAllTrailNetworks } from "$lib/server/api/trails";
 import { invalid, type Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "../$types";
@@ -6,9 +6,11 @@ import type { PageServerLoad } from "../$types";
 export const load: PageServerLoad = () => {
     const allNetworks = getAllTrailNetworks();
     const trailStates = getTrailStates();
+    const trailComments = getTrailComments();
     return {
         traiNetworks: allNetworks,
-        trailStates
+        trailStates,
+        trailComments
     }
 }
 
@@ -20,6 +22,7 @@ export const actions: Actions = {
         console.log(body);
 
 
-        if (!body['network-id'] || body.state || !body.comments) return invalid(400, { message: "Missing required field" })
+        if (!body['network-id'] || !body.state || !body.comments) return invalid(400, { message: "Missing required field" });
+
     }
 }

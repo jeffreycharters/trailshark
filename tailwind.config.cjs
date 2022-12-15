@@ -5,4 +5,15 @@ module.exports = {
     extend: {},
   },
   plugins: [require("daisyui")],
+  safelist: [
+    "text-success",
+    "text-warning",
+    "text-error",
+    "border-success",
+    "border-warning",
+    "border-error",
+    "bg-success",
+    "bg-warning",
+    "bg-error"
+  ]
 }

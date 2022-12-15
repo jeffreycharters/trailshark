@@ -2,15 +2,21 @@
 	import type { ActionData, PageData } from './$types';
 	import { apiBaseUrl } from '$lib/constants';
 	import { page } from '$app/stores';
-	import type { TrailState } from '@prisma/client';
-
-	export let trailStates: TrailState[];
+	import TrailStatusForm from '$lib/components/TrailStatusForm.svelte';
+	import { trailsLoading, trailsList } from '$lib/stores';
+	import type { PendingTrailStatus } from '$lib/types';
 
 	export let form: ActionData;
 	export let data: PageData;
 	let network: string = 'clbcwd3su0001fle9lr4f2yp9';
 	let state: number = 1;
 	let comment: string = 'testing';
+
+	const getRandomId = () => {
+		return crypto.randomUUID();
+	};
+
+	let trailStatuses: PendingTrailStatus[] = [{ id: getRandomId(), editing: true }];
 
 	const cannedComments = [
 		'No problems',
@@ -20,11 +26,38 @@
 
 	let cannedCommentsOpen: boolean = false;
 
-	const getNetworkTrails = async (networkId: string) => {
+	$: stateTextColour = data.trailStates.find((t) => t.id === state)?.textColor;
+
+	const getNetworkTrails = async () => {
+		trailsLoading.set(true);
+		const networkSlug = data.traiNetworks.find((n) => n.id === network)?.slug;
+		if (!networkSlug) return;
 		const hostUrl = $page.url.origin;
-		const apiUrl = `${hostUrl}${apiBaseUrl}/statuses/`;
+		const apiUrl = `${hostUrl}${apiBaseUrl}/trails/networks/${networkSlug}/`;
 		const res = await fetch(apiUrl);
-		console.log(res);
+		trailsList.set(await res.json());
+		setTimeout(() => trailsLoading.set(false), 250);
+	};
+
+	type FieldName = 'comment' | 'trail';
+
+	const updateTrailStatus = async (event: CustomEvent) => {
+		const { field, id, payload } = event.detail;
+		const statusToUpdate = trailStatuses.find((s) => s.id === id);
+		if (!statusToUpdate) return;
+
+		statusToUpdate[field as FieldName] = payload;
+		trailStatuses = trailStatuses;
+	};
+
+	const deleteStatus = async (event: string) => {
+		let updatedStatuses = trailStatuses.filter((s) => s.id != event);
+
+		if (updatedStatuses.length === 0) {
+			trailStatuses = [{ editing: true, id: getRandomId() }];
+		} else {
+			trailStatuses = updatedStatuses;
+		}
 	};
 </script>
 
@@ -35,6 +68,7 @@
 		class="select select-bordered w-full max-w-xs mb-4"
 		bind:value={network}
 		name="network-id"
+		on:change={getNetworkTrails}
 	>
 		<option disabled selected value="">Choose trail network</option>
 		{#each data.traiNetworks as network}
@@ -43,10 +77,14 @@
 	</select>
 
 	{#if network}
-		<select class="select select-bordered w-full max-w-xs" bind:value={state} name="state">
+		<select
+			class="select select-bordered w-full max-w-xs border-{stateTextColour}"
+			bind:value={state}
+			name="state"
+		>
 			<option disabled selected value="">Overall trail state</option>
-			{#each trailStates as state}
-				<option value={state.id}>{state.description}</option>
+			{#each data.trailStates as trailState}
+				<option value={trailState.id}>{trailState.description}</option>
 			{/each}
 		</select>
 	{/if}
@@ -91,20 +129,37 @@
 	{/if}
 
 	{#if comment}
-		<div class="divider text-lg font-bold">Trail Status (optional)</div>
-		{#await getNetworkTrails(network)}
-			Loading...
-		{:then newTrails}
-			Yay trails!
-		{/await}
+		<div class="divider text-lg font-bold">Trail Statuses</div>
+
+		<p>
+			Add a comment to let others know the conditions of specific trails. <strong>Optional</strong>.
+		</p>
+
+		{#each trailStatuses as status (status?.id)}
+			<button type="button" on:click={() => deleteStatus(status?.id)}>
+				{status.id}
+			</button>
+		{/each}
+
+		<input type="hidden" name="trail-comment-count" value={trailStatuses?.length || 0} />
+
+		<div>
+			<button
+				class="btn btn-sm"
+				type="button"
+				on:click={() => (trailStatuses = [...trailStatuses, { editing: true, id: getRandomId() }])}
+			>
+				+ Add Another
+			</button>
+		</div>
 	{/if}
 
 	<div class={form?.message ? 'text-error' : ''}>
-		{form?.message || ' '}
+		{form?.message || ''}
 	</div>
 
 	{#if network && state}
-		<div class="mt-4">
+		<div class="mt-4 mb-12">
 			<button type="submit" class="btn w-full max-w-xs {comment.length > 3 ? '' : 'btn-disabled'}">
 				Send it!
 			</button>
