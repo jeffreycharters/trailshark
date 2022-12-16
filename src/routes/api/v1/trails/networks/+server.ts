@@ -6,7 +6,7 @@ export const GET: RequestHandler = async ({ url }) => {
     let perPage: number = url.searchParams.get('per') as unknown as number ?? undefined;
     let page: number = url.searchParams.get('page') as unknown as number ?? undefined;
 
-    if (isNaN(perPage) || isNaN(page)) throw error(400, { message: "Invalid parameters." });
+    if (isNaN(perPage) || isNaN(page)) throw error(400, { message: "fail parameters." });
     const newNetworks = await getTrailNetworkPage(perPage, page);
     return json(newNetworks)
 }

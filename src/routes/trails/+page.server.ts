@@ -1,6 +1,6 @@
 import { addTrail, getAllTrailNetworks } from '$lib/server/api/trails';
 import type { Trail } from '@prisma/client';
-import { invalid, redirect } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from '../$types';
 import type { Actions } from './$types';
 
@@ -27,7 +27,7 @@ export const actions: Actions = {
             const session = await locals.getSessionUser();
             if (!session?.user) throw redirect(302, "/login");
 
-            if (!body.name) return invalid(400, { message: 'Name is required' })
+            if (!body.name) return fail(400, { message: 'Name is required' })
 
             const newTrailObj = {
                 name: body.name.toString(),

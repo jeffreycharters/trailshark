@@ -1,5 +1,5 @@
 import { addTrailState, getTrailStates } from "$lib/server/api/statuses"
-import { invalid, type Actions } from "@sveltejs/kit";
+import { fail, type Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types"
 
 export const load: PageServerLoad = async () => {
@@ -15,10 +15,10 @@ export const actions: Actions = {
         const description: unknown = data.get('description')
         const textColour: unknown = data.get('text-colour')
 
-        if (typeof description != "string" || typeof textColour != "string") return invalid(400, { message: "What even is this?" })
-        if (description?.length < 3) return invalid(400, { message: "Description must be 3 or more characters" })
+        if (typeof description != "string" || typeof textColour != "string") return fail(400, { message: "What even is this?" })
+        if (description?.length < 3) return fail(400, { message: "Description must be 3 or more characters" })
         const newState = await addTrailState(description, textColour)
-        if (!newState) return invalid(500, { message: "Unknown error" })
+        if (!newState) return fail(500, { message: "Unknown error" })
         return {
             success: true
         }

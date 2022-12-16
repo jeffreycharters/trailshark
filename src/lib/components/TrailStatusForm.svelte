@@ -6,7 +6,7 @@
 	export let comments: (TrailStatusComments & { state: TrailState })[];
 	export let status: PendingTrailStatus;
 
-	let { editing, id } = status;
+	let { id } = status;
 
 	const dispatch = createEventDispatcher();
 

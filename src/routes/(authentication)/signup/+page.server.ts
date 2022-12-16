@@ -1,5 +1,5 @@
 import { auth } from '$lib/server/lucia';
-import { invalid, type Actions } from '@sveltejs/kit';
+import { fail, type Actions } from '@sveltejs/kit';
 import crypto from 'crypto';
 
 export const actions: Actions = {
@@ -8,8 +8,8 @@ export const actions: Actions = {
         const email = form.get('email');
         const password = form.get('password');
         if (!email || !password || typeof email !== 'string' || typeof password !== 'string') {
-            return invalid(400, {
-                message: 'Invalid input'
+            return fail(400, {
+                message: 'fail input'
             });
         }
         try {
@@ -26,12 +26,12 @@ export const actions: Actions = {
         } catch (e) {
             const error = e as Error;
             if (error.message === 'AUTH_DUPLICATE_PROVIDER_ID') {
-                return invalid(400, {
+                return fail(400, {
                     message: 'Email already in use'
                 });
             }
             console.error(error);
-            return invalid(500, {
+            return fail(500, {
                 message: 'Unknown error occurred'
             });
         }
@@ -40,10 +40,9 @@ export const actions: Actions = {
 
 import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import { LuciaError } from 'lucia-auth';
 
 export const load: PageServerLoad = async ({ locals }) => {
-    const session = await locals.getSession();
+    const session = await locals.validate();
     if (session) throw redirect(302, '/');
     return {};
 };

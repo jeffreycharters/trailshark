@@ -24,7 +24,7 @@
 			const username = data.get('email')?.toString() || '';
 			const password = data.get('password')?.toString() || '';
 			if (!username || !password) {
-				form.message = 'Invalid input';
+				form.message = 'fail input';
 				cancel();
 			}
 		}}

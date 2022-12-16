@@ -1,11 +1,11 @@
 import { prisma } from '$lib/server/db'
 import type { TrailNetwork } from '@prisma/client';
-import { invalid } from '@sveltejs/kit';
+import { fail } from '@sveltejs/kit';
 import slugify from 'slugify';
 
 
 export const addTrailNetwork = async (name: string, userId: string) => {
-    if (name.length <= 2) return invalid(400, { mesage: "Name too short" });
+    if (name.length <= 2) return fail(400, { mesage: "Name too short" });
 
     const newTrailNetwork = await prisma.trailNetwork.create({
         data: {
@@ -48,7 +48,7 @@ export const getAllTrailNetworks = async (approvedOnly: boolean = true) => {
             isApproved: approvedOnly ? true : undefined
         },
         orderBy: {
-            slug: "desc"
+            slug: "asc"
         }
     })
     return trailNetworks;

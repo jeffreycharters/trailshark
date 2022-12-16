@@ -68,8 +68,9 @@ model NetworkStatus {
   userId         String
   network        TrailNetwork  @relation(fields: [trailNetworkId], references: [id])
   trailNetworkId String
-  state          Int
-  comments       String
+  state          TrailState    @relation(fields: [trailStateId], references: [id])
+  trailStateId   Int
+  comments       String?
   trailStatuses  TrailStatus[]
   createdAt      DateTime      @default(now())
   updatedAt      DateTime?     @updatedAt
@@ -92,6 +93,7 @@ model TrailState {
   description         String                @unique
   textColor           String
   TrailStatusComments TrailStatusComments[]
+  NetworkStatus       NetworkStatus[]
 }
 
 model TrailStatusComments {
