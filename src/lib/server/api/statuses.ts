@@ -1,4 +1,5 @@
 import { prisma } from "$lib/server/db";
+import { comment } from "postcss";
 
 
 export const addTrailState = async (description: string, textColor: string) => {
@@ -22,7 +23,7 @@ export const getTrailStates = async () => {
 }
 
 export const addTrailComment = async (comment: string, trailStateId: number) => {
-    const newComment = await prisma.trailStatusComments.create({
+    const newComment = await prisma.trailStatusComment.create({
         data: {
             comment, trailStateId
         }
@@ -31,7 +32,7 @@ export const addTrailComment = async (comment: string, trailStateId: number) => 
 }
 
 export const getTrailComments = async () => {
-    const comments = await prisma.trailStatusComments.findMany({
+    const comments = await prisma.trailStatusComment.findMany({
         orderBy: {
             trailStateId: "asc"
         },
@@ -68,4 +69,62 @@ export const getNetworkStatus = async (statusId: string) => {
         }
     })
     return networkStatus;
+}
+
+export const getTrailStatusesById = async (networkStatusId: string) => {
+    const trailStatuses = await prisma.trailStatus.findMany({
+        where: {
+            networkStatusId
+        },
+        include: {
+            trail: true,
+            comment: {
+                include: {
+                    state: true
+                }
+            }
+        }
+    })
+
+    const sortedTrailStatuses = trailStatuses.sort((a, b) => {
+        return a.trail.name < b.trail.name ? -1 : 1;
+    })
+
+    return sortedTrailStatuses;
+}
+
+export const addTrailStatus = async (networkStatusId: string, trailId: string, commentId: string) => {
+    const newStatus = await prisma.trailStatus.create({
+        data: {
+            networkStatusId,
+            trailId,
+            trailStatusCommentId: commentId,
+        },
+        include: {
+            trail: true,
+            comment: {
+                include: {
+                    state: true,
+                }
+            }
+        }
+    })
+
+    return newStatus;
+}
+
+export const getLatestStatusesForUser = async (userId: string) => {
+    const latestStatuses = await prisma.networkStatus.findMany({
+        include: {
+            network: true,
+            trailStatuses: {
+                include: {
+                    trail: true,
+                    comment: true
+                }
+            },
+            state: true
+        }
+    });
+    return latestStatuses;
 }

@@ -15,6 +15,6 @@ export let actions: Actions = {
 
         await addTrailComment(body.comment.toString(), Number(body.state));
 
-        throw redirect(302, "/adminc/trails/comments")
+        throw redirect(302, "/adminc/trails/comments/")
     }
 }

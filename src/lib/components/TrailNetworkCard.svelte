@@ -7,17 +7,28 @@
 
 	const user = getUser();
 
-	const toggleApproval = async (network: TrailNetwork) => {
-		const res = await fetch('/api/v1/trails/networks/', {
+	const toggleApproval = async () => {
+		console.log({
 			method: 'PATCH',
-			body: JSON.stringify({ isApproved: !network.isApproved, networks: [network.id] }),
+			body: JSON.stringify({ isApproved: !isApproved, network: network.id }),
 			headers: {
 				'content-type': 'application/json'
 			}
 		});
-		const updateCount = await res.json();
 
-		if (updateCount.count === 1) {
+		const res = await fetch('/api/v1/trails/networks/', {
+			method: 'PATCH',
+			body: JSON.stringify({
+				isApproved: !isApproved,
+				network: network.id
+			}),
+			headers: {
+				'content-type': 'application/json'
+			}
+		});
+		const updatedTrail = await res.json();
+
+		if (updatedTrail.isApproved != isApproved) {
 			isApproved = !isApproved;
 		}
 	};
@@ -29,7 +40,7 @@
 	</div>
 
 	{#if $user?.isAdmin}
-		<button class="btn btn-xs btn-primary" on:click={() => toggleApproval(network)}
+		<button class="btn btn-xs btn-primary" on:click={toggleApproval}
 			>{isApproved ? 'Unapprove' : 'Approve'}</button
 		>
 	{/if}

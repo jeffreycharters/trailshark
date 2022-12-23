@@ -12,9 +12,9 @@ export const GET: RequestHandler = async ({ url }) => {
 }
 
 export const PATCH: RequestHandler = async ({ request }) => {
-    const { isApproved, networks } = await request.json();
+    const { isApproved, network } = await request.json();
 
-    const updatedNetwork = await toggleTrailNetworkApproval(isApproved, networks);
+    const updatedNetwork = await toggleTrailNetworkApproval(isApproved, network);
 
     return json(updatedNetwork);
 }

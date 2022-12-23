@@ -3,6 +3,10 @@
 	import { getUser, handleSession, signOut } from '@lucia-auth/sveltekit/client';
 	import { invalidateAll } from '$app/navigation';
 	import '../app.css';
+	import Messages from '$lib/components/Messages.svelte';
+	import { messages } from '$lib/stores';
+	import { onDestroy } from 'svelte';
+	import { browser } from '$app/environment';
 
 	handleSession(page);
 
@@ -10,11 +14,26 @@
 		text: string;
 		href: string;
 	};
-	const menuLinks: Link[] = [{ text: 'Trail Conditions', href: '/trails/latest/' }];
+	const menuLinks: Link[] = [{ text: 'Trail Conditions', href: '/trails/latest' }];
 
 	const user = getUser();
+
+	const removeOldestMessage = () => {
+		messages.update((n) => {
+			if (n.length === 1) return [];
+			return n.slice(1);
+		});
+	};
+
+	const messageTimer = setInterval(removeOldestMessage, 3000);
+	onDestroy(() => {
+		clearInterval(messageTimer);
+	});
 </script>
 
+{#if $messages && browser}
+	<Messages messages={$messages} />
+{/if}
 <div class="min-h-full">
 	<nav class="navbar bg-neutral border-b text-neutral-content">
 		<div class="flex-1">
@@ -42,7 +61,7 @@
 						class="menu dropdown-content dropdown-end p-2 shadow bg-base-100 rounded-box w-52 mt-4 text-primary-focus border border-base-200"
 					>
 						<li>
-							<a href="/users/settings/">Settings</a>
+							<a href="/users/settings">Settings</a>
 						</li>
 						<li>
 							<button

@@ -1,17 +1,16 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import { stateEnums } from '$lib/constants';
 
 	export let data: PageData;
 
 	let selectedState: string;
 	let comment: string = '';
 
-	$: disabled = selectedState && comment.length > 2 ? true : false;
+	$: disabled = !selectedState || comment.length <= 2;
 </script>
 
 <details>
-	<summary class="mb-4 cursor-pointer <!-- hi -->"> Add new trail comment </summary>
+	<summary class="mb-4 cursor-pointer"> Add new trail comment </summary>
 	<p class="my-4">
 		Trail comments are short canned items that could be used to explain certain trail conditions.
 	</p>
@@ -25,9 +24,7 @@
 <details>
 	<summary>Current Comments</summary>
 	{#each data.trailComments as comment}
-		<div
-			class="border border-l-4 rounded p-2 my-2 {stateEnums[`${comment.state.textColor}Border`]}"
-		>
+		<div class="border border-l-4 rounded p-2 my-2 border-{comment.state.textColor}">
 			{comment.comment}
 		</div>
 	{/each}
@@ -36,15 +33,15 @@
 <form method="post">
 	<div class="font-bold w-full max-w-xs">Related Trail State</div>
 	{#each data.trailStates as state}
-		<div class="form-control w-full max-w-xs">
+		<div class="form-control w-full max-w-xs my-2 rounded border border-{state.textColor} px-4">
 			<label class="label cursor-pointer">
 				<span class="label-text">{state.description}</span>
 				<input
+					on:click={() => (selectedState = state.textColor)}
 					type="radio"
 					name="state"
-					class="radio checked:{stateEnums[`${selectedState}Bg`]}"
+					class="radio checked:bg-{selectedState}"
 					value={state.id}
-					on:click={() => (selectedState = state.textColor)}
 				/>
 			</label>
 		</div>

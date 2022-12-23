@@ -54,17 +54,16 @@ export const getAllTrailNetworks = async (approvedOnly: boolean = true) => {
     return trailNetworks;
 }
 
-export const toggleTrailNetworkApproval = async (isApproved: boolean, networks: string[]) => {
-    const updateCount = await prisma.trailNetwork.updateMany({
+export const toggleTrailNetworkApproval = async (isApproved: boolean, network: string) => {
+    const updatedNetwork = await prisma.trailNetwork.update({
         where: {
-            id: { in: networks }
+            id: network
         },
         data: {
             isApproved,
-            updatedAt: new Date()
         }
     });
-    return updateCount;
+    return updatedNetwork;
 }
 
 export interface TrailAddParams {
@@ -91,4 +90,51 @@ export const addTrail = async (params: TrailAddParams) => {
         throw new Error("Couldn't create new trail");
     }
 
+}
+
+export const getTrailsFor = async (trailNetworkId: string, approvedOnly: boolean = true) => {
+    const trails = await prisma.trail.findMany({
+        where: {
+            trailNetworkId,
+            isApproved: approvedOnly ?? undefined
+        },
+        orderBy: {
+            name: "asc"
+        }
+    });
+    return trails.sort((a, b) => a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1);
+}
+
+export const getUnapprovedTrails = async () => {
+    const unapprovedTrails = await prisma.trail.findMany({
+        where: {
+            isApproved: false
+        },
+        orderBy: [{
+            trailNetwork: {
+                slug: "asc"
+            }
+        },
+        { name: "asc" }
+        ],
+        include: {
+            trailNetwork: true
+        }
+    });
+
+    return unapprovedTrails;
+}
+
+
+
+export const toggleTrailApproval = async (isApproved: boolean, trail: string) => {
+    const updatedTrail = await prisma.trail.update({
+        where: {
+            id: trail
+        },
+        data: {
+            isApproved,
+        }
+    });
+    return updatedTrail;
 }

@@ -1,9 +1,22 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
+	import { messages } from '$lib/stores';
 	import type { ActionData, PageData } from './$types';
 
 	export let form: ActionData;
 	export let data: PageData;
 	let { trailNetworkList } = data;
+
+	if (form?.success && browser) {
+		messages.update((n) => [
+			...n,
+			{
+				alertLevel: 'success',
+				message: `Successfully added trail: <strong>${form?.newTrail?.name}</strong>`,
+				icon: true
+			}
+		]);
+	}
 </script>
 
 <div class="flex flex-col">
@@ -38,7 +51,8 @@
 					<span class="label-text-alt text-error">{form?.message ? form.message : ''}</span>
 				</label>
 			</div>
-			<button class="btn btn-primary mt-2 w-full max-w-md">Submit for Approval</button>
+			<button type="submit" class="btn btn-primary mt-2 w-full max-w-md">Submit for Approval</button
+			>
 		</form>
 	</div>
 </div>

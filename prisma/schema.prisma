@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgres"
   url      = env("DATABASE_URL")
 }
 
@@ -57,6 +57,7 @@ model Trail {
   userId         String
   createdAt      DateTime      @default(now())
   updatedAt      DateTime?     @updatedAt
+  isApproved     Boolean       @default(false)
   statuses       TrailStatus[]
 
   @@unique([name, trailNetworkId])
@@ -77,28 +78,31 @@ model NetworkStatus {
 }
 
 model TrailStatus {
-  id              String        @id @unique @default(cuid())
-  trail           Trail         @relation(fields: [trailId], references: [id])
-  trailId         String
-  networkStatus   NetworkStatus @relation(fields: [networkStatusId], references: [id])
-  networkStatusId String
-  state           Int
-  comments        String
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime?     @updatedAt
+  id                   String             @id @unique @default(cuid())
+  trail                Trail              @relation(fields: [trailId], references: [id])
+  trailId              String
+  networkStatus        NetworkStatus      @relation(fields: [networkStatusId], references: [id])
+  networkStatusId      String
+  comment              TrailStatusComment @relation(fields: [trailStatusCommentId], references: [id])
+  trailStatusCommentId String
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime?          @updatedAt
+
+  @@unique([networkStatusId, trailId])
 }
 
 model TrailState {
-  id                  Int                   @id @unique @default(autoincrement())
-  description         String                @unique
+  id                  Int                  @id @unique @default(autoincrement())
+  description         String               @unique
   textColor           String
-  TrailStatusComments TrailStatusComments[]
+  TrailStatusComments TrailStatusComment[]
   NetworkStatus       NetworkStatus[]
 }
 
-model TrailStatusComments {
-  id           String     @id @unique @default(cuid())
+model TrailStatusComment {
+  id           String        @id @unique @default(cuid())
   comment      String
-  state        TrailState @relation(fields: [trailStateId], references: [id])
+  state        TrailState    @relation(fields: [trailStateId], references: [id])
   trailStateId Int
+  TrailStatus  TrailStatus[]
 }

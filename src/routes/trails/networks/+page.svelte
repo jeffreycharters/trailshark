@@ -1,11 +1,11 @@
 <script lang="ts">
 	import LatestTrailNetworks from '$lib/components/LatestTrailNetworks.svelte';
 	import type { ActionData, PageData } from './$types';
-	import { trailNetworksPerPage, apiBaseUrl } from '$lib/constants';
+	import { apiBaseUrl } from '$lib/constants';
 	import { page } from '$app/stores';
 	export let form: ActionData;
 	export let data: PageData;
-	let { latestNetworks, trailNetworkList } = data;
+	let { latestNetworks } = data;
 	let name = '';
 
 	let currentPage = 1;
@@ -17,12 +17,6 @@
 		const newTrails = await res.json();
 		console.log(currentPage);
 		return newTrails;
-	};
-
-	const getMoreTrailNetworks = async () => {
-		++currentPage;
-		const moreNetworks = await getMoreNetworks(trailNetworksPerPage, currentPage);
-		trailNetworkList = [...trailNetworkList, ...moreNetworks];
 	};
 </script>
 
