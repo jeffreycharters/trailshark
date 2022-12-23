@@ -13,7 +13,7 @@
 		{status.network.name}: {status.comments}
 		{#if status.trailStatuses?.length > 0}
 			{#each status.trailStatuses as trailStatus (trailStatus.id)}
-				<div>
+				<div class="border my-1 p-2 border-{trailStatus.comment.state.textColor} rounded">
 					{trailStatus.trail.name} - {trailStatus.comment.comment}
 				</div>
 			{/each}

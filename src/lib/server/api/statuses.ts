@@ -1,5 +1,4 @@
 import { prisma } from "$lib/server/db";
-import { comment } from "postcss";
 
 
 export const addTrailState = async (description: string, textColor: string) => {
@@ -120,7 +119,11 @@ export const getLatestStatusesForUser = async (userId: string) => {
             trailStatuses: {
                 include: {
                     trail: true,
-                    comment: true
+                    comment: {
+                        include: {
+                            state: true
+                        }
+                    }
                 }
             },
             state: true

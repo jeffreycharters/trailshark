@@ -1,10 +1,12 @@
 import { getLatestStatusesForUser } from "$lib/server/api/statuses";
+import { redirect } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async ({ locals }) => {
+export const load = (async ({ locals }) => {
     const { user } = await locals.validateUser();
-    const latestStatuses = await getLatestStatusesForUser(user.id)
+    if (!user?.userId) throw redirect(302, "/login");
+    const latestStatuses = await getLatestStatusesForUser(user?.userId)
     return {
         latestStatuses
     }
-}
+}) satisfies PageServerLoad;

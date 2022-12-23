@@ -1,6 +1,7 @@
-import { fail, type Actions } from '@sveltejs/kit';
+import { fail, type Actions, redirect } from '@sveltejs/kit';
 import { auth } from '$lib/server/lucia';
 import type { PageServerLoad } from './$types';
+import { loginRedirectUrl } from '$lib/constants';
 
 export const load: PageServerLoad = async ({ locals }) => {
     const session = await locals.validate();
@@ -22,10 +23,8 @@ export const actions: Actions = {
         try {
             const user = await auth.authenticateUser('email', email, password);
             const session = await auth.createSession(user.userId);
+
             locals.setSession(session);
-            return {
-                success: true
-            }
         } catch (e) {
             const error = e as Error;
             if (
@@ -42,5 +41,6 @@ export const actions: Actions = {
                 message: 'Unknown error occurred'
             });
         }
+        throw redirect(302, loginRedirectUrl)
     }
 };
