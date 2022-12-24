@@ -1,43 +1,55 @@
-import { addTrailNetwork, getLatestTrailNetworks, getTrailNetworkPage } from '$lib/server/api/trails';
-import { fail, redirect } from '@sveltejs/kit';
-import type { Actions, PageServerLoad } from './$types';
+import { getStatusCountsPerNetwork } from '$lib/server/api/statuses';
+import { getAllTrailNetworks } from '$lib/server/api/trails';
+import type { TrailNetwork } from '@prisma/client';
+import type { PageServerLoad } from './$types';
+import { getUserSubscriptions, toggleSubscriptionStatus } from '$lib/server/api/subscriptions';
+import { redirect, type Actions, fail } from '@sveltejs/kit';
 
-export const load: PageServerLoad = async ({ locals }) => {
-    const session = await locals.validateUser()
-    const getApprovedOnly = !session.user?.isAdmin;
-    const latestNetworks = getLatestTrailNetworks(3, getApprovedOnly);
-    const networksPerPage = 2;
-    let currentPage = 1;
-    const trailNetworkList = getTrailNetworkPage(networksPerPage, currentPage);
-    return {
-        latestNetworks,
-        trailNetworkList
-    }
+interface statusCountAndSubsrciption {
+    statusCount?: number;
+    subscribed?: boolean;
 }
 
-export const actions: Actions = {
-    default: async ({ locals, request }) => {
-        const body = Object.fromEntries(await request.formData());
-        if (body.name.length <= 2) return fail(400, { message: "Name must be greater than 2 characters." });
+export const load = (async ({ locals }) => {
+    const trailNetworkList: (TrailNetwork & statusCountAndSubsrciption)[] | undefined = await getAllTrailNetworks();
+    const statusCounts = await getStatusCountsPerNetwork();
 
-        try {
-            const session = await locals.validateUser();
-            if (!session?.user) throw redirect(302, "/login");
+    statusCounts.forEach(s => {
+        const currentNetwork = trailNetworkList.find(n => n.id === s.trailNetworkId);
+        if (currentNetwork) currentNetwork.statusCount = s._count.trailNetworkId
+    })
 
-            if (!body.name) return fail(400, { message: 'Name is required' })
-            const newTrail = await addTrailNetwork(body.name.toString(), session.user.userId)
+    const { user } = await locals.validateUser();
+    if (!user) throw redirect(302, 'login');
 
-            return {
-                trail: newTrail,
-                success: true
-            }
-        } catch (err) {
-            const error = err as Error;
-            if (error.message.includes("unique")) return fail(400, { message: 'System already exists!' })
-            return {
-                message: error.message
-            }
-        }
+    const subscriptions = await getUserSubscriptions(user.userId);
+    subscriptions.forEach(s => {
+        const currentNetwork = trailNetworkList.find(n => n.id === s.trailNetworkId);
+        if (currentNetwork) currentNetwork.subscribed = true;
+    })
+
+    return {
+        trailNetworkList
+    };
+}) satisfies PageServerLoad;
+
+export const actions = ({
+    default: async ({ request, locals }) => {
+        const data = await request.formData();
+
+        const networkId = data.get('network-id');
+        const subscribeString = data.get('subscribe');
+
+        let subscribe: boolean | undefined;
+        if (subscribeString === 'true') subscribe = true;
+        if (subscribeString === 'false') subscribe = false;
+        if (subscribe === undefined) return { message: 'Error saving' }
+
+        const { user } = await locals.validateUser();
+        if (!user) throw redirect(302, 'login')
+        if (!networkId) throw fail(400, { message: 'Error subscribing to network' });
+
+        await toggleSubscriptionStatus(user?.userId, networkId.toString())
 
     }
-};
+}) satisfies Actions;

@@ -1,5 +1,4 @@
 import { prisma } from '$lib/server/db'
-import type { TrailNetwork } from '@prisma/client';
 import { fail } from '@sveltejs/kit';
 import slugify from 'slugify';
 

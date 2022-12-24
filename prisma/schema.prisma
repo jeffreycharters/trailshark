@@ -11,15 +11,16 @@ datasource db {
 }
 
 model User {
-  id              String          @id @unique @default(cuid())
-  provider_id     String          @unique
-  hashed_password String?
-  username        String          @unique
-  isAdmin         Boolean         @default(false)
-  session         Session[]
-  trailNetworks   TrailNetwork[]
-  trails          Trail[]
-  statusUpdates   NetworkStatus[]
+  id                  String                @id @unique @default(cuid())
+  provider_id         String                @unique
+  hashed_password     String?
+  username            String                @unique
+  isAdmin             Boolean               @default(false)
+  session             Session[]
+  trailNetworks       TrailNetwork[]
+  trails              Trail[]
+  statusUpdates       NetworkStatus[]
+  NetworkSubscription NetworkSubscription[]
 
   @@map("user")
 }
@@ -36,16 +37,17 @@ model Session {
 }
 
 model TrailNetwork {
-  id         String          @id @unique @default(cuid())
-  name       String          @unique
-  createdAt  DateTime        @default(now())
-  updatedAt  DateTime?       @updatedAt
-  addedBy    User?           @relation(fields: [userId], references: [id], onDelete: SetNull)
-  userId     String?
-  slug       String?
-  isApproved Boolean         @default(false)
-  trails     Trail[]
-  statuses   NetworkStatus[]
+  id                  String                @id @unique @default(cuid())
+  name                String                @unique
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime?             @updatedAt
+  addedBy             User?                 @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId              String?
+  slug                String?
+  isApproved          Boolean               @default(false)
+  trails              Trail[]
+  statuses            NetworkStatus[]
+  NetworkSubscription NetworkSubscription[]
 }
 
 model Trail {
@@ -105,4 +107,13 @@ model TrailStatusComment {
   state        TrailState    @relation(fields: [trailStateId], references: [id])
   trailStateId Int
   TrailStatus  TrailStatus[]
+}
+
+model NetworkSubscription {
+  user           User         @relation(fields: [userId], references: [id])
+  userId         String
+  trailNetwork   TrailNetwork @relation(fields: [trailNetworkId], references: [id])
+  trailNetworkId String
+
+  @@unique([userId, trailNetworkId])
 }

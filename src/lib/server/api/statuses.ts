@@ -127,7 +127,21 @@ export const getLatestStatusesForUser = async (userId: string) => {
                 }
             },
             state: true
-        }
+        },
+        orderBy: {
+            updatedAt: "desc"
+        },
+        distinct: ["trailNetworkId"]
     });
     return latestStatuses;
+}
+
+export const getStatusCountsPerNetwork = async () => {
+    const statusCounts = await prisma.networkStatus.groupBy({
+        by: ["trailNetworkId"],
+        _count: {
+            trailNetworkId: true,
+        }
+    })
+    return statusCounts
 }

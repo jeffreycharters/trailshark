@@ -1,63 +1,43 @@
 <script lang="ts">
-	import LatestTrailNetworks from '$lib/components/LatestTrailNetworks.svelte';
-	import type { ActionData, PageData } from './$types';
-	import { apiBaseUrl } from '$lib/constants';
-	import { page } from '$app/stores';
-	export let form: ActionData;
-	export let data: PageData;
-	let { latestNetworks } = data;
-	let name = '';
+	import type { PageData } from './$types';
 
-	let currentPage = 1;
-	const getMoreNetworks = async (trailNetworksPerPage: number, currentPage: number) => {
-		const url = `${
-			$page.url.origin
-		}${apiBaseUrl}/trails/networks/?page=${currentPage.toString()}&per=${trailNetworksPerPage.toString()}`;
-		const res = await fetch(url);
-		const newTrails = await res.json();
-		console.log(currentPage);
-		return newTrails;
+	export let data: PageData;
+	let { trailNetworkList } = data;
+	let networksToShow = trailNetworkList;
+
+	let filterText = '';
+
+	const filterNetworks = () => {
+		networksToShow = trailNetworkList.filter((n) =>
+			n.name.toLowerCase().includes(filterText.toLowerCase())
+		);
 	};
 </script>
 
-<div class="lg:grid grid-cols-12 gap-4">
-	<div class="col-start-1 col-span-7">
-		<h2 class="text-lg font-bold">Add a trail network</h2>
+<h1 class="text-xl font-bold">Trail Network List</h1>
 
-		<div class="mt-4">
-			Before you fill out this form, please make sure that the system doesn't exist under a similar
-			name by using the <a href="/trails/networks/search" class="link link-primary"
-				>Trail network search</a
-			>.
-		</div>
-
-		<div class="mt-4">The system will need to be approved before any updates can be added.</div>
-
-		<div class="divider" />
-
-		<form method="post">
-			<div class="form-control w-full max-w-md">
-				<label class="label" for="name">
-					<span class="label-text font-semibold">Trail Network name</span>
-				</label>
-				<input
-					bind:value={name}
-					name="name"
-					type="text"
-					placeholder="Don't include &quot;trails&quot in the name"
-					class="input input-bordered w-full max-w-md"
-				/>
-				<!-- svelte-ignore a11y-label-has-associated-control -->
-				<label class="label">
-					<span class="label-text-alt text-error">{form?.message ? form.message : ''}</span>
-				</label>
-			</div>
-			<button class="btn btn-primary mt-2 w-full max-w-md {name.length <= 2 ? 'btn-disabled' : ''}"
-				>Submit for Approval</button
-			>
-		</form>
-	</div>
-	<div class="col-start-9 col-span-3 lg:mt-0 mt-16">
-		<LatestTrailNetworks {latestNetworks} />
-	</div>
+<div class="form-control w-full max-w-xs">
+	<label class="label" for="filter">
+		<span class="label-text">Find in trail name:</span>
+	</label>
+	<input
+		type="text"
+		name="filter"
+		bind:value={filterText}
+		class="input input-bordered w-full max-w-xs"
+		on:input={filterNetworks}
+	/>
 </div>
+
+{#each networksToShow as network}
+	<form method="post">
+		<div class="border my-2 p-2 rounded shadow flex justify-between">
+			{network.name} ({network.statusCount} Statuses)
+			<input type="hidden" name="network-id" value={network.id} />
+			<input type="hidden" name="subscribe" value={network.subscribed ? false : true} />
+			<button class="btn btn-outline btn-sm"
+				>{network.subscribed ? 'Unsubscribe' : 'Subscribe'}</button
+			>
+		</div>
+	</form>
+{/each}
