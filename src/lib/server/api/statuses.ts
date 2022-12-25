@@ -1,4 +1,5 @@
 import { prisma } from "$lib/server/db";
+import type { NetworkStatus } from "@prisma/client";
 
 
 export const addTrailState = async (description: string, textColor: string) => {
@@ -113,7 +114,27 @@ export const addTrailStatus = async (networkStatusId: string, trailId: string, c
 }
 
 export const getLatestStatusesForUser = async (userId: string) => {
-    const latestStatuses = await prisma.networkStatus.findMany({
+    const userSubscriptions = await prisma.networkSubscription.findMany({
+        where: {
+            userId
+        }
+    })
+
+    let latestStatuses: NetworkStatus[];
+
+
+    let subscribedTrails: string[] = [];
+    if (userSubscriptions.length > 0) {
+        userSubscriptions.forEach(s => {
+            subscribedTrails.push(s.trailNetworkId);
+        });
+    }
+    latestStatuses = await prisma.networkStatus.findMany({
+        where: subscribedTrails.length > 0 ? {
+            trailNetworkId: {
+                in: subscribedTrails
+            }
+        } : undefined,
         include: {
             network: true,
             trailStatuses: {
