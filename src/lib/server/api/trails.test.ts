@@ -1,5 +1,5 @@
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
-import { addTrailNetwork, toggleTrailNetworkApproval } from "./trails";
+import { addTrailNetwork, toggleTrailNetworkApproval, getLatestTrailNetworks } from "./trails";
 import { prisma } from "$lib/server/db";
 import type { TrailNetwork, User } from "@prisma/client";
 
@@ -44,16 +44,44 @@ describe('trail networks', () => {
     it('toggling isApproved works properly', async () => {
         const newSystem = {
             name: "New Trail",
-            userId: user.id
+            userId: user.id,
         }
         const addedSystem = await addTrailNetwork(newSystem.name, newSystem.userId) as unknown as TrailNetwork;
 
         if (!addedSystem) return;
 
-        const payload = await toggleTrailNetworkApproval(addedSystem.isApproved, [addedSystem.id]);
+        const updatedSystem = await toggleTrailNetworkApproval(!addedSystem.isApproved, addedSystem.id);
 
-        expect(payload.count).toEqual(1);
-
+        expect(updatedSystem.isApproved).toEqual(!addedSystem.isApproved);
 
     });
+
+    it('latest systems function does not retrieve unapproved trails by default', async () => {
+        for (let i = 0; i < 10; ++i) await prisma.trailNetwork.create({
+            data: {
+                name: `Trail System ${i}`,
+                userId: user.id,
+                isApproved: i < 5
+            }
+        })
+
+        const latestTrailNetworks = await getLatestTrailNetworks(10);
+        expect(latestTrailNetworks.length).toEqual(5)
+
+    })
+
+    it('latest systems function retrieves unapproved trails when requested', async () => {
+        for (let i = 0; i < 10; ++i) await prisma.trailNetwork.create({
+            data: {
+                name: `Trail System ${i}`,
+                userId: user.id,
+                isApproved: i < 5
+            }
+        })
+
+        const latestTrailNetworks = await getLatestTrailNetworks(10, false);
+        expect(latestTrailNetworks.length).toEqual(10)
+
+    });
+
 });
