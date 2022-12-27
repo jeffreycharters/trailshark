@@ -120,16 +120,13 @@ export const getLatestStatusesForUser = async (userId: string) => {
         }
     })
 
-    let latestStatuses: NetworkStatus[];
-
-
     let subscribedTrails: string[] = [];
     if (userSubscriptions.length > 0) {
         userSubscriptions.forEach(s => {
             subscribedTrails.push(s.trailNetworkId);
         });
     }
-    latestStatuses = await prisma.networkStatus.findMany({
+    let latestStatuses = await prisma.networkStatus.findMany({
         where: subscribedTrails.length > 0 ? {
             trailNetworkId: {
                 in: subscribedTrails
@@ -137,6 +134,7 @@ export const getLatestStatusesForUser = async (userId: string) => {
         } : undefined,
         include: {
             network: true,
+            author: true,
             trailStatuses: {
                 include: {
                     trail: true,
@@ -154,6 +152,13 @@ export const getLatestStatusesForUser = async (userId: string) => {
         },
         distinct: ["trailNetworkId"]
     });
+
+    latestStatuses.forEach(s => {
+        if (s.trailStatuses.length > 0) {
+            s.trailStatuses.sort((a, b) => a.comment.state.id < b.comment.state.id ? -1 : 1)
+        }
+    })
+
     return latestStatuses;
 }
 

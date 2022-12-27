@@ -96,7 +96,7 @@ model TrailStatus {
 model TrailState {
   id                  Int                  @id @unique @default(autoincrement())
   description         String               @unique
-  textColor           String
+  textColour          String
   TrailStatusComments TrailStatusComment[]
   NetworkStatus       NetworkStatus[]
 }
