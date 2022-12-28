@@ -27,11 +27,14 @@
 
 <div
 	class="border border-{status.state
-		.textColor} my-2 p-4 border-l-4 rounded shadow min-w-md max-w-lg bg-{status.state
-		.textColor} bg-opacity-10 ml-8"
+		.textColor} my-8 p-4 border-l-4 rounded shadow min-w-md max-w-xl bg-{status.state
+		.textColor} bg-opacity-5 ml-8"
 >
 	<div class="flex justify-between items-baseline {status.trailStatuses.length > 0 ? 'mb-4' : ''}">
-		<h2 class="text-2xl font-bold">{status.network.name}</h2>
+		<h2 class="text-2xl font-bold">
+			{status.network.name}
+			<span class="font-normal italic text-opacity-80">// {status.state.description}</span>
+		</h2>
 		<div class="text-lg font-bold">
 			{status.comments}
 		</div>
