@@ -6,7 +6,8 @@ import { loginRedirectUrl } from '$lib/constants';
 export const load: PageServerLoad = async ({ locals }) => {
     const session = await locals.validate();
     return {
-        hasSession: !!session
+        hasSession: !!session,
+        title: 'Login'
     }
 }
 

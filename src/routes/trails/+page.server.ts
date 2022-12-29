@@ -3,7 +3,6 @@ import type { Trail } from '@prisma/client';
 import { fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from '../$types';
 import type { Actions } from './$types';
-import { messages } from '$lib/stores';
 
 export const load: PageServerLoad = async () => {
     const trailNetworkList = await getAllTrailNetworks();
@@ -15,7 +14,8 @@ export const load: PageServerLoad = async () => {
     });
 
     return {
-        trailNetworkList: trailNamesAndIds
+        trailNetworkList: trailNamesAndIds,
+        title: 'Trails'
     }
 }
 

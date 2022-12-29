@@ -3,37 +3,30 @@
 	import { getUser, handleSession, signOut } from '@lucia-auth/sveltekit/client';
 	import { invalidateAll } from '$app/navigation';
 	import '../app.css';
-	import Messages from '$lib/components/Messages.svelte';
 	import { messages } from '$lib/stores';
 	import { onDestroy } from 'svelte';
-	import { browser } from '$app/environment';
+	import SideMenu from './SideMenu.svelte';
 
 	handleSession(page);
+
+	const user = getUser();
 
 	type Link = {
 		text: string;
 		href: string;
 	};
+
 	const menuLinks: Link[] = [{ text: 'Trail Conditions', href: '/trails/latest' }];
 
-	const user = getUser();
-
-	const removeOldestMessage = () => {
-		messages.update((n) => {
-			if (n.length === 1) return [];
-			return n.slice(1);
-		});
-	};
-
-	const messageTimer = setInterval(removeOldestMessage, 3000);
 	onDestroy(() => {
-		clearInterval(messageTimer);
+		messages.set([]);
 	});
 </script>
 
-{#if $messages && browser}
-	<Messages messages={$messages} />
-{/if}
+<svelte:head>
+	<title>{$page.data.title || 'Welcome'} // Trailshark</title>
+</svelte:head>
+
 <div class="min-h-full">
 	<nav class="navbar bg-neutral border-b text-neutral-content">
 		<div class="flex-1">
@@ -111,7 +104,8 @@
 			{/if}
 		</div>
 	</nav>
-	<div>
-		<slot />
-	</div>
 </div>
+
+<SideMenu {user}>
+	<slot />
+</SideMenu>

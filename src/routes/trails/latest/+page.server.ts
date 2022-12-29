@@ -8,6 +8,7 @@ export const load = (async ({ locals }) => {
 
     const latestStatuses = await getLatestStatusesForUser(user?.userId)
     return {
-        latestStatuses
+        latestStatuses,
+        title: 'Latest trail conditions'
     }
 }) satisfies PageServerLoad;

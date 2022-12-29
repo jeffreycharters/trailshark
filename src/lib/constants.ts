@@ -16,3 +16,5 @@ export const stateEnums: Record<string, string> = {
     errorBg: 'bg-error'
 
 };
+
+export const headingOneClasses = "text-3xl font-bold";

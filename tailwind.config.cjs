@@ -14,6 +14,9 @@ module.exports = {
     "border-error",
     "bg-success",
     "bg-warning",
-    "bg-error"
+    "bg-error",
+    "alert-success",
+    "alert-warning",
+    "alert-error"
   ]
 }

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import { messages } from '$lib/stores';
+	import { addMessage, messages } from '$lib/stores';
 	import type { ActionData, PageData } from './$types';
 
 	export let form: ActionData;
@@ -8,14 +8,11 @@
 	let { trailNetworkList } = data;
 
 	if (form?.success && browser) {
-		messages.update((n) => [
-			...n,
-			{
-				alertLevel: 'success',
-				message: `Successfully added trail: <strong>${form?.newTrail?.name}</strong>`,
-				icon: true
-			}
-		]);
+		addMessage({
+			alertLevel: 'success',
+			message: `Successfully added trail: <strong>${form?.newTrail?.name}</strong>`,
+			icon: true
+		});
 	}
 </script>
 
