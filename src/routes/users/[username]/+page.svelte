@@ -18,11 +18,11 @@
 	<form
 		method="post"
 		use:enhance={() => {
-			return async ({ result, update }) => {
+			return async ({ result }) => {
 				if (result.type === 'success' && result.data) {
-					goto(`/users/${result.data.updatedUsername}`);
+					goto(`/users/${result.data.updatedUsername}`, { invalidateAll: true });
 					username = result.data.updatedUsername;
-					addMessage({ alertLevel: 'success', message: 'Good stuff' });
+					addMessage({ alertLevel: 'success', message: 'Changes saved' });
 				}
 			};
 		}}
