@@ -1,6 +1,16 @@
 import { auth } from '$lib/server/lucia';
 import { fail, type Actions } from '@sveltejs/kit';
 import crypto from 'crypto';
+import { redirect } from '@sveltejs/kit';
+import type { PageServerLoad } from './$types';
+
+export const load: PageServerLoad = async ({ locals }) => {
+    const session = await locals.validate();
+    if (session) throw redirect(302, '/');
+    return {
+        title: 'Sign up'
+    };
+};
 
 export const actions: Actions = {
     default: async ({ request, locals }) => {
@@ -18,7 +28,8 @@ export const actions: Actions = {
                 password,
                 attributes: {
                     username,
-                    isAdmin: false
+                    isAdmin: false,
+                    email
                 }
             });
             const session = await auth.createSession(user.userId);
@@ -36,15 +47,4 @@ export const actions: Actions = {
             });
         }
     }
-};
-
-import { redirect } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
-
-export const load: PageServerLoad = async ({ locals }) => {
-    const session = await locals.validate();
-    if (session) throw redirect(302, '/');
-    return {
-        title: 'Sign up'
-    };
 };

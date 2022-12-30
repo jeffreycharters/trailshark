@@ -15,6 +15,7 @@ model User {
   provider_id         String                @unique
   hashed_password     String?
   username            String                @unique
+  email               String                @unique
   isAdmin             Boolean               @default(false)
   session             Session[]
   trailNetworks       TrailNetwork[]

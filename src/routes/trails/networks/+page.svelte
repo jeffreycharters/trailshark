@@ -16,6 +16,10 @@
 
 <h1 class="text-xl font-bold">Trail Network List</h1>
 
+<div>
+	Feel free to <a href="/trails/networks/add" class="link">add your network</a> if you don't see it.
+</div>
+
 <div class="form-control w-full max-w-xs">
 	<label class="label" for="filter">
 		<span class="label-text">Find in trail name:</span>

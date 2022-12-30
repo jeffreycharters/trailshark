@@ -18,5 +18,6 @@ declare namespace Lucia {
 	interface UserAttributes {
 		isAdmin: boolean;
 		username: string;
+		email: string;
 	};
 }

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import { addMessage, messages } from '$lib/stores';
+	import { addMessage } from '$lib/messages';
 	import type { ActionData, PageData } from './$types';
 
 	export let form: ActionData;
