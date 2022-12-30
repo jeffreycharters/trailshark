@@ -6,7 +6,7 @@
 		comment: TrailStatusComment & { state: TrailState };
 	};
 
-	$: stateColour = status.comment.state.textColor;
+	$: stateColour = status.comment.state.textColour;
 </script>
 
 <div class="border-2 border-{stateColour} p-4 font-bold my-2 rounded">

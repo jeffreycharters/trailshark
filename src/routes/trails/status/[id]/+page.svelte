@@ -17,9 +17,9 @@
 	});
 </script>
 
-<div class="border-2 border-{data.networkStatus?.state.textColor} p-4 rounded">
+<div class="border-2 border-{data.networkStatus?.state.textColour} p-4 rounded">
 	<span class="font-bold">
-		<span class="text-{networkStatus?.state.textColor}">{networkStatus?.state.description}</span>
+		<span class="text-{networkStatus?.state.textColour}">{networkStatus?.state.description}</span>
 		{networkStatus?.network.name}
 	</span>
 	<div class="">{networkStatus?.comments}</div>

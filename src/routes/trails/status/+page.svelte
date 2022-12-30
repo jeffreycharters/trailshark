@@ -8,7 +8,7 @@
 	let selectedNetwork: string | undefined = form?.network?.toString() ?? undefined;
 	let selectedState: number | undefined = form?.state ? +form.state : undefined;
 
-	$: borderColour = trailStates.find((s) => s.id === selectedState)?.textColor;
+	$: borderColour = trailStates.find((s) => s.id === selectedState)?.textColour;
 	$: disableSubmit = !selectedNetwork || !selectedState;
 </script>
 

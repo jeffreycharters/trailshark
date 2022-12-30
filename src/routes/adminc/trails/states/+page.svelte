@@ -5,7 +5,6 @@
 	export let form: ActionData;
 	export let data: PageData;
 	let colour: string = 'success';
-
 </script>
 
 <details>
@@ -28,7 +27,7 @@
 </details>
 
 {#each data.trailStates as state}
-	<div class="btn w-full cursor-default my-2 {stateEnums[`${state.textColor}Btn`]}">
+	<div class="btn w-full cursor-default my-2 {stateEnums[`${state.textColour}Btn`]}">
 		{state.description}
 	</div>
 {/each}

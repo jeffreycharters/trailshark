@@ -1,23 +1,14 @@
 <script lang="ts">
 	import LatestTrailNetworks from '$lib/components/LatestTrailNetworks.svelte';
+	import { addMessage } from '$lib/messages';
 	import type { ActionData, PageData } from './$types';
-	import { apiBaseUrl } from '$lib/constants';
-	import { page } from '$app/stores';
 	export let form: ActionData;
 	export let data: PageData;
 	let { latestNetworks } = data;
 	let name = '';
 
-	let currentPage = 1;
-	const getMoreNetworks = async (trailNetworksPerPage: number, currentPage: number) => {
-		const url = `${
-			$page.url.origin
-		}${apiBaseUrl}/trails/networks/?page=${currentPage.toString()}&per=${trailNetworksPerPage.toString()}`;
-		const res = await fetch(url);
-		const newTrails = await res.json();
-		console.log(currentPage);
-		return newTrails;
-	};
+	if (form?.success && form?.trail)
+		addMessage({ alertLevel: 'success', message: `Added <strong>${form.trail.name}</strong>` });
 </script>
 
 <div class="lg:grid grid-cols-12 gap-4">

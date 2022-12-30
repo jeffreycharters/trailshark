@@ -10,7 +10,7 @@
 
 	let icon: string;
 	let iconClasses = 'h-5 w-5';
-	switch (trailStatus.comment.state.textColor) {
+	switch (trailStatus.comment.state.textColour) {
 		case 'error':
 			icon = `<svg xmlns="http://www.w3.org/2000/svg" class="${iconClasses} stroke-error" viewBox="0 0 24 24" stroke-width="2.25" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -38,8 +38,8 @@
 
 <div
 	class="border border-l-4 border-{trailStatus.comment.state
-		.textColor} p-2 rounded my-2 max-w-lg flex justify-between shadow ml-4 bg-{trailStatus.comment
-		.state.textColor} bg-opacity-10"
+		.textColour} p-2 rounded my-2 max-w-lg flex justify-between shadow ml-4 bg-{trailStatus.comment
+		.state.textColour} bg-opacity-10"
 >
 	<div class="flex items-center gap-2">
 		{@html icon || ''}<span class="font-bold text-primary-content italic"

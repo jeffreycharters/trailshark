@@ -35,11 +35,11 @@
 
 {#each networksToShow as network}
 	<form method="post">
-		<div class="border my-2 p-2 rounded shadow flex justify-between">
-			{network.name} ({network.statusCount} Statuses)
+		<div class="border my-2 p-4 rounded shadow flex justify-between items-center">
+			{network.name} ({network.statusCount ?? '0'} Status{network.statusCount === 1 ? '' : 'es'})
 			<input type="hidden" name="network-id" value={network.id} />
 			<input type="hidden" name="subscribe" value={network.subscribed ? false : true} />
-			<button class="btn btn-outline btn-sm"
+			<button class="btn btn-sm btn-{network.subscribed ? 'warning' : 'success'}"
 				>{network.subscribed ? 'Unsubscribe' : 'Subscribe'}</button
 			>
 		</div>

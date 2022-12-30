@@ -50,7 +50,7 @@
 			<select
 				bind:value={selectedComment}
 				class="select select-bordered w-full max-w-xs border-l-4 my-2 border-{comment?.state
-					.textColor}"
+					.textColour}"
 				on:change={() => dispatchTrailUpdate('comment')}
 			>
 				<option disabled selected value="">Select Comment</option>
@@ -60,7 +60,7 @@
 			</select>
 		</div>
 	{:else}
-		<div class="border-l-4 border-{comment?.state.textColor} rounded px-4 flex my-2">
+		<div class="border-l-4 border-{comment?.state.textColour} rounded px-4 flex my-2">
 			<div>
 				<div class="text-lg font-bold">
 					{trail?.name}

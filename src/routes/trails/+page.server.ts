@@ -21,8 +21,6 @@ export const load: PageServerLoad = async () => {
 
 export const actions: Actions = {
     default: async ({ locals, request }) => {
-        console.log('running save!');
-
         const body = Object.fromEntries(await request.formData());
         let newTrail: Trail;
         try {

@@ -12,11 +12,11 @@ describe('trail networks', () => {
     it('can add new state', async () => {
         const newState = {
             description: "Some descipription",
-            textColor: "warning"
+            textColour: "warning"
         }
-        const addedState = await addTrailState(newState.description, newState.textColor) as unknown as TrailState;
+        const addedState = await addTrailState(newState.description, newState.textColour) as unknown as TrailState;
 
         expect(addedState?.description).toEqual(newState.description);
-        expect(addedState?.textColor).toEqual(newState.textColor);
+        expect(addedState?.textColour).toEqual(newState.textColour);
     });
 });

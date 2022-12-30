@@ -2,11 +2,11 @@ import { prisma } from "$lib/server/db";
 import type { NetworkStatus } from "@prisma/client";
 
 
-export const addTrailState = async (description: string, textColor: string) => {
+export const addTrailState = async (description: string, textColour: string) => {
     const newState = await prisma.trailState.create({
         data: {
             description,
-            textColor
+            textColour
         }
     });
 

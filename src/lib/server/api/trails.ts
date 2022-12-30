@@ -1,11 +1,8 @@
 import { prisma } from '$lib/server/db'
-import { fail } from '@sveltejs/kit';
 import slugify from 'slugify';
 
 
 export const addTrailNetwork = async (name: string, userId: string) => {
-    if (name.length <= 2) return fail(400, { mesage: "Name too short" });
-
     const newTrailNetwork = await prisma.trailNetwork.create({
         data: {
             name,

@@ -24,7 +24,7 @@
 <details>
 	<summary>Current Comments</summary>
 	{#each data.trailComments as comment}
-		<div class="border border-l-4 rounded p-2 my-2 border-{comment.state.textColor}">
+		<div class="border border-l-4 rounded p-2 my-2 border-{comment.state.textColour}">
 			{comment.comment}
 		</div>
 	{/each}
@@ -33,11 +33,11 @@
 <form method="post">
 	<div class="font-bold w-full max-w-xs">Related Trail State</div>
 	{#each data.trailStates as state}
-		<div class="form-control w-full max-w-xs my-2 rounded border border-{state.textColor} px-4">
+		<div class="form-control w-full max-w-xs my-2 rounded border border-{state.textColour} px-4">
 			<label class="label cursor-pointer">
 				<span class="label-text">{state.description}</span>
 				<input
-					on:click={() => (selectedState = state.textColor)}
+					on:click={() => (selectedState = state.textColour)}
 					type="radio"
 					name="state"
 					class="radio checked:bg-{selectedState}"

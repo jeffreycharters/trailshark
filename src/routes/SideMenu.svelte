@@ -13,6 +13,10 @@
 	export let user: Readable<ClientUser>;
 </script>
 
+{#if $messages && browser}
+	<Messages messages={$messages} />
+{/if}
+
 <div class="drawer drawer-mobile">
 	<input id="trails-menu-drawer" type="checkbox" class="drawer-toggle" bind:checked={visible} />
 	<div class="drawer-content flex flex-col">
@@ -23,11 +27,6 @@
 			class="btn btn-outline bg-base-100 btn-sm shadow drawer-button lg:hidden fixed bottom-2 right-2"
 			>Menu</label
 		>
-
-		{#if $messages && browser}
-			<Messages messages={$messages} />
-		{/if}
-
 		<div class="p-4">
 			<slot />
 		</div>
