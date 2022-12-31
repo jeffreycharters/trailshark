@@ -9,6 +9,8 @@
 
 <h1 class="text-3xl font-bold mb-8">Latest Trail Conditions</h1>
 
-{#each latestStatuses as status (status.id)}
-	<NetworkStatus {status} />
-{/each}
+<div class="mb-4">
+	{#each latestStatuses as status (status.id)}
+		<NetworkStatus {status} />
+	{/each}
+</div>
