@@ -6,7 +6,6 @@ import type { TrailNetwork } from '@prisma/client';
 export const load: PageServerLoad = async ({ locals }) => {
     const session = await locals.validateUser()
     const getApprovedOnly = !session.user?.isAdmin;
-    console.log(getApprovedOnly);
 
     const latestNetworks = getLatestTrailNetworks(10, getApprovedOnly);
     const networksPerPage = 2;

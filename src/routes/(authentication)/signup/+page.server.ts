@@ -6,7 +6,7 @@ import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals }) => {
     const session = await locals.validate();
-    if (session) throw redirect(302, '/');
+    if (session) throw redirect(302, '/trails/latest');
     return {
         title: 'Sign up'
     };
@@ -34,6 +34,7 @@ export const actions: Actions = {
             });
             const session = await auth.createSession(user.userId);
             locals.setSession(session);
+            throw redirect(302, '/trails/latest');
         } catch (e) {
             const error = e as Error;
             if (error.message === 'AUTH_DUPLICATE_PROVIDER_ID') {

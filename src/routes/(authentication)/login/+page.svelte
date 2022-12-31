@@ -1,7 +1,13 @@
 <script lang="ts">
-	import type { ActionData } from './$types';
+	import { addMessage } from '$lib/messages';
+	import type { ActionData, PageData } from './$types';
 
+	export let data: PageData;
 	export let form: ActionData;
+
+	if (data.passwordChanged) {
+		addMessage({ alertLevel: 'success', message: 'Password changed! Please log in now' });
+	}
 </script>
 
 <div class="flex flex-col items-center h-full w-full">
@@ -25,7 +31,11 @@
 			<label class="label" for="password"><span class="label-text">Password</span></label><br />
 			<input class="input input-bordered" type="password" id="password" name="password" /><br />
 		</div>
+		<p class="text-error">{form?.message || ''}</p>
 		<button type="submit" class="btn w-full max-w-md mt-4">log in</button>
 	</form>
-	<p class="text-error">{form?.message || ''}</p>
+
+	<div class="mt-4">
+		Did you <a href="/login/password-reset/" class="link">forget your password</a>?
+	</div>
 </div>

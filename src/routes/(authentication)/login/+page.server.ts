@@ -3,11 +3,13 @@ import { auth } from '$lib/server/lucia';
 import type { PageServerLoad } from './$types';
 import { loginRedirectUrl } from '$lib/constants';
 
-export const load: PageServerLoad = async ({ locals }) => {
+export const load: PageServerLoad = async ({ locals, url }) => {
+    const passwordChanged = url.searchParams.get('password')
     const session = await locals.validate();
     return {
         hasSession: !!session,
-        title: 'Login'
+        title: 'Login',
+        passwordChanged
     }
 }
 

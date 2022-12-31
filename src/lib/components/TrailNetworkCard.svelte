@@ -8,14 +8,6 @@
 	const user = getUser();
 
 	const toggleApproval = async () => {
-		console.log({
-			method: 'PATCH',
-			body: JSON.stringify({ isApproved: !isApproved, network: network.id }),
-			headers: {
-				'content-type': 'application/json'
-			}
-		});
-
 		const res = await fetch('/api/v1/trails/networks/', {
 			method: 'PATCH',
 			body: JSON.stringify({

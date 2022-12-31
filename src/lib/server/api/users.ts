@@ -18,7 +18,18 @@ export const getUserByUsername = async (username: string) => {
             username
         }
     });
-    return user;
+    if (user) return exclude(user, ["hashed_password", "provider_id"])
+    return null;
+}
+
+export const getUserByEmail = async (email: string) => {
+    const user = await prisma.user.findUnique({
+        where: {
+            email
+        }
+    });
+    if (user) return exclude(user, ["hashed_password", "provider_id", "isAdmin"])
+    return null;
 }
 
 interface UserParamsToUpdate {
@@ -33,6 +44,16 @@ export const updateUserById = async (id: string, params: UserParamsToUpdate) => 
         data: params
     });
 
-    const userWithoutPassword = exclude(updatedUser, ['hashed_password']);
+    const userWithoutPassword = exclude(updatedUser, ['hashed_password', "provider_id", "isAdmin"]);
     return userWithoutPassword;
+}
+
+export const userExistsWithEmail = async (email: string) => {
+    const user = await prisma.user.findUnique({
+        where: {
+            email
+        }
+    })
+
+    return !!user;
 }

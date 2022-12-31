@@ -10,4 +10,6 @@
 
 {#each unapprovedTrails as trail (trail.id)}
 	<AdminTrailRow {trail} />
+{:else}
+	<div class="my-4 font-bold italic text-primary-focus">None at the moment!</div>
 {/each}

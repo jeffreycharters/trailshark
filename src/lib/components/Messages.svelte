@@ -3,7 +3,7 @@
 	export let messages: AlertMessage[];
 </script>
 
-<div class="toast toast-start sm:toast-center sm:toast-bottom w-full max-w-lg">
+<div class="toast toast-start sm:toast-center sm:toast-bottom w-full max-w-lg mb-8 sm:mb-0">
 	{#each messages as message (message)}
 		<div class="alert text-sm alert-{message.alertLevel} w-full max-w-lg">
 			<div class="">
