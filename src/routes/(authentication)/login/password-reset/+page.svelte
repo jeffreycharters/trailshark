@@ -19,7 +19,6 @@
 			name="ts-email"
 			placeholder="Email!"
 			class="input input-bordered w-full max-w-xs"
-			value="jeffrey@example.com"
 		/>
 	</div>
 

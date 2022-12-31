@@ -95,7 +95,6 @@
 				name="current-password"
 				placeholder="password1234"
 				class="input input-bordered w-full max-w-xs"
-				value="testpass123"
 			/>
 		</div>
 
@@ -108,7 +107,6 @@
 				name="password"
 				placeholder="18 to 36 characters"
 				class="input input-bordered w-full max-w-xs"
-				value="testpass123"
 			/>
 		</div>
 
@@ -121,7 +119,6 @@
 				name="password-confirm"
 				placeholder="Same as last one 👆"
 				class="input input-bordered w-full max-w-xs"
-				value="testpass123"
 			/>
 		</div>
 

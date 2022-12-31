@@ -24,7 +24,7 @@
 
 		<label
 			for="trails-menu-drawer"
-			class="btn btn-outline bg-base-100 btn-sm shadow drawer-button lg:hidden fixed bottom-2 right-2"
+			class="btn btn-outline bg-base-100 bg-opacity-40 btn-sm shadow drawer-button lg:hidden fixed bottom-2 right-2"
 			>Menu</label
 		>
 		<div class="p-4">
