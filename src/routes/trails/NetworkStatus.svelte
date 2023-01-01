@@ -1,28 +1,8 @@
 <script lang="ts">
-	import type {
-		NetworkStatus,
-		TrailNetwork,
-		TrailState,
-		TrailStatusComment,
-		TrailStatus,
-		Trail,
-		User
-	} from '@prisma/client';
+	import type { TrailNetworkWithTrailStatuses } from '$lib/types';
 	import TrailStatusDisplay from './TrailStatusDisplay.svelte';
 
-	export let status: NetworkStatus & {
-		network: TrailNetwork;
-		state: TrailState;
-		author: User;
-		trailStatuses: Array<
-			TrailStatus & {
-				trail: Trail;
-				comment: TrailStatusComment & {
-					state: TrailState;
-				};
-			}
-		>;
-	};
+	export let status: TrailNetworkWithTrailStatuses;
 </script>
 
 <div

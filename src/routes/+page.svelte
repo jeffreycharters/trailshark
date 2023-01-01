@@ -1,10 +1,3 @@
-<script lang="ts">
-	import type { PageData } from './$types';
-
-	export let data: PageData;
-	const user: PageData['user'] = data.session.user;
-</script>
-
 <div class="p-4">
 	<h2 class="text-xl font-bold mb-4">Keeping you outside</h2>
 

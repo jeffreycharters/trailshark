@@ -1,4 +1,4 @@
-import { addTrailStatus, getNetworkStatus, getTrailComments, getTrailStatusesById } from "$lib/server/api/statuses";
+import { addTrailStatus, getNetworkStatus, getTrailComments, getTrailStatusesByNetworkId } from "$lib/server/api/statuses";
 import { getTrailsFor } from "$lib/server/api/trails";
 import { redirect, type Actions, fail } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
@@ -11,7 +11,7 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 
     const comments = await getTrailComments();
 
-    const existingTrailStatuses = await getTrailStatusesById(statusId);
+    const existingTrailStatuses = await getTrailStatusesByNetworkId(statusId);
 
     const { user } = await locals.validateUser();
     const isAuthor = networkStatus?.author.id === user?.userId;

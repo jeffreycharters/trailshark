@@ -24,7 +24,7 @@
 </script>
 
 <svelte:head>
-	<title>{$page.data.title || 'Welcome'} // Trailshark</title>
+	<title>{$page.data.title || 'Welcome'} /// Trailshark</title>
 </svelte:head>
 
 <div class="min-h-full">
@@ -106,6 +106,6 @@
 	</nav>
 </div>
 
-<SideMenu {user}>
+<SideMenu>
 	<slot />
 </SideMenu>

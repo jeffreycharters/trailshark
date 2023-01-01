@@ -71,7 +71,7 @@ export const getNetworkStatus = async (statusId: string) => {
     return networkStatus;
 }
 
-export const getTrailStatusesById = async (networkStatusId: string) => {
+export const getTrailStatusesByNetworkId = async (networkStatusId: string) => {
     const trailStatuses = await prisma.trailStatus.findMany({
         where: {
             networkStatusId
@@ -113,6 +113,22 @@ export const addTrailStatus = async (networkStatusId: string, trailId: string, c
     return newStatus;
 }
 
+const completeStatusOptions = {
+    network: true,
+    author: true,
+    trailStatuses: {
+        include: {
+            trail: true,
+            comment: {
+                include: {
+                    state: true
+                }
+            }
+        }
+    },
+    state: true
+}
+
 export const getLatestStatusesForUser = async (userId: string) => {
     const userSubscriptions = await prisma.networkSubscription.findMany({
         where: {
@@ -132,21 +148,7 @@ export const getLatestStatusesForUser = async (userId: string) => {
                 in: subscribedTrails
             }
         } : undefined,
-        include: {
-            network: true,
-            author: true,
-            trailStatuses: {
-                include: {
-                    trail: true,
-                    comment: {
-                        include: {
-                            state: true
-                        }
-                    }
-                }
-            },
-            state: true
-        },
+        include: completeStatusOptions,
         orderBy: {
             updatedAt: "desc"
         },
@@ -170,4 +172,16 @@ export const getStatusCountsPerNetwork = async () => {
         }
     })
     return statusCounts
+}
+
+export const getLatestNetworkStatuses = async () => {
+    const latestUpdates = await prisma.networkStatus.findMany({
+        orderBy: {
+            updatedAt: "desc",
+        },
+        take: 15,
+        include: completeStatusOptions,
+        distinct: ["trailNetworkId"]
+    })
+    return latestUpdates;
 }

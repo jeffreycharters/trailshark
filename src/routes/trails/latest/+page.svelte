@@ -7,10 +7,12 @@
 	const { latestStatuses } = data;
 </script>
 
-<h1 class="text-3xl font-bold mb-8">Latest Trail Conditions</h1>
+<div class="sm:w-full sm:max-w-lg sm:mx-auto xl:ml-20">
+	<h1 class="text-3xl font-bold mb-8">Latest Trail Conditions</h1>
 
-<div class="mb-4">
-	{#each latestStatuses as status (status.id)}
-		<NetworkStatus {status} />
-	{/each}
+	<div class="mb-4">
+		{#each latestStatuses as status (status.id)}
+			<NetworkStatus {status} />
+		{/each}
+	</div>
 </div>
