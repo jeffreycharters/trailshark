@@ -129,7 +129,7 @@ export const addTrailStatus = async (networkStatusId: string, trailId: string, c
             updatedAt: new Date()
         }
     });
-    if (!updatedNetwork) console.log('TODO: fix this');
+    if (!updatedNetwork) console.log('TODO: fix this please');
 
     return newStatus;
 }
