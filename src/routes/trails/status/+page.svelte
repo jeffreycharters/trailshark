@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { headingOneClasses } from '$lib/constants';
 	import type { ActionData, PageData } from './$types';
 
 	export let data: PageData;
@@ -12,36 +13,39 @@
 	$: disableSubmit = !selectedNetwork || !selectedState;
 </script>
 
-<div>
-	<h2 class="text-xl font-bold">Trail Network Status</h2>
+<div class="w-full max-w-xs">
+	<h2 class={headingOneClasses}>Add network status</h2>
 	<p class="my-4 px-2">Update conditions for the trail network as a whole.</p>
 	<p class="my-4 px-2">On the next page you'll be able to add updates for individual trails.</p>
 	<form method="post">
-		<select
-			class="select select-bordered w-full max-w-xs my-2"
-			name="network"
-			bind:value={selectedNetwork}
-		>
-			<option disabled selected>Select Trail Network</option>
-			{#each trailNetworks as trailNetwork}
-				<option value={trailNetwork.id}>{trailNetwork.name}</option>
-			{/each}
-		</select>
-
-		<select
-			class="select select-bordered w-full max-w-xs my-2 border-{borderColour}"
-			bind:value={selectedState}
-			name="state"
-		>
-			<option disabled selected>Select State</option>
-			{#each trailStates as trailState}
-				<option value={trailState.id}>{trailState.description}</option>
-			{/each}
-		</select>
+		<div>
+			<select
+				class="select select-bordered w-full max-w-xs my-2"
+				name="network"
+				bind:value={selectedNetwork}
+			>
+				<option disabled selected>Select Trail Network</option>
+				{#each trailNetworks as trailNetwork}
+					<option value={trailNetwork.id}>{trailNetwork.name}</option>
+				{/each}
+			</select>
+		</div>
+		<div>
+			<select
+				class="select select-bordered w-full max-w-xs my-2 border-{borderColour}"
+				bind:value={selectedState}
+				name="state"
+			>
+				<option disabled selected>Select State</option>
+				{#each trailStates as trailState}
+					<option value={trailState.id}>{trailState.description}</option>
+				{/each}
+			</select>
+		</div>
 
 		<div class="form-control">
 			<label class="label font-bold justify-start gap-2" for="comment">
-				<span class="label-text">Comment</span>
+				<span class="label-text">Comment on conditions</span>
 				<span class="label-text text-primary italic tracking-wide">(Optional)</span>
 			</label>
 			<textarea

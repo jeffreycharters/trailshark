@@ -4,12 +4,14 @@ import type { PageServerLoad } from './$types';
 import { loginRedirectUrl } from '$lib/constants';
 
 export const load: PageServerLoad = async ({ locals, url }) => {
-    const passwordChanged = url.searchParams.get('password')
+    const passwordChanged = url.searchParams.get('password');
+    const addStatus = url.searchParams.get('add-status');
     const session = await locals.validate();
     return {
         hasSession: !!session,
         title: 'Login',
-        passwordChanged
+        passwordChanged,
+        addStatus
     }
 }
 

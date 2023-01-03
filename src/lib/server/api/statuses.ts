@@ -1,6 +1,21 @@
 import { prisma } from "$lib/server/db";
-import type { NetworkStatus } from "@prisma/client";
 
+// add this to your "include:" options
+const completeStatusOptions = {
+    network: true,
+    author: true,
+    trailStatuses: {
+        include: {
+            trail: true,
+            comment: {
+                include: {
+                    state: true
+                }
+            }
+        }
+    },
+    state: true
+}
 
 export const addTrailState = async (description: string, textColour: string) => {
     const newState = await prisma.trailState.create({
@@ -26,7 +41,7 @@ export const addTrailComment = async (comment: string, trailStateId: number) => 
     const newComment = await prisma.trailStatusComment.create({
         data: {
             comment, trailStateId
-        }
+        },
     })
     return newComment;
 }
@@ -62,11 +77,7 @@ export const getNetworkStatus = async (statusId: string) => {
         where: {
             id: statusId
         },
-        include: {
-            network: true,
-            author: true,
-            state: true
-        }
+        include: completeStatusOptions
     })
     return networkStatus;
 }
@@ -106,28 +117,23 @@ export const addTrailStatus = async (networkStatusId: string, trailId: string, c
                 include: {
                     state: true,
                 }
-            }
+            },
         }
-    })
+    });
+
+    const updatedNetwork = await prisma.networkStatus.update({
+        where: {
+            id: newStatus.networkStatusId
+        },
+        data: {
+            updatedAt: new Date()
+        }
+    });
+    if (!updatedNetwork) console.log('TODO: fix this');
 
     return newStatus;
 }
 
-const completeStatusOptions = {
-    network: true,
-    author: true,
-    trailStatuses: {
-        include: {
-            trail: true,
-            comment: {
-                include: {
-                    state: true
-                }
-            }
-        }
-    },
-    state: true
-}
 
 export const getLatestStatusesForUser = async (userId: string) => {
     const userSubscriptions = await prisma.networkSubscription.findMany({

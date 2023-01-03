@@ -4,14 +4,11 @@ import type { TrailNetwork } from '@prisma/client';
 import type { PageServerLoad } from './$types';
 import { getUserSubscriptions, toggleSubscriptionStatus } from '$lib/server/api/subscriptions';
 import { redirect, type Actions, fail } from '@sveltejs/kit';
+import type { StatusCountAndSubscription } from '$lib/types';
 
-interface statusCountAndSubsrciption {
-    statusCount?: number;
-    subscribed?: boolean;
-}
 
 export const load = (async ({ locals }) => {
-    const trailNetworkList: (TrailNetwork & statusCountAndSubsrciption)[] | undefined = await getAllTrailNetworks();
+    const trailNetworkList: (TrailNetwork & StatusCountAndSubscription)[] | undefined = await getAllTrailNetworks();
     const statusCounts = await getStatusCountsPerNetwork();
 
     statusCounts.forEach(s => {
@@ -20,15 +17,16 @@ export const load = (async ({ locals }) => {
     })
 
     const { user } = await locals.validateUser();
-    if (!user) throw redirect(302, 'login');
-
-    const subscriptions = await getUserSubscriptions(user.userId);
-    subscriptions.forEach(s => {
-        const currentNetwork = trailNetworkList.find(n => n.id === s.trailNetworkId);
-        if (currentNetwork) currentNetwork.subscribed = true;
-    })
+    if (user) {
+        const subscriptions = await getUserSubscriptions(user.userId);
+        subscriptions.forEach(s => {
+            const currentNetwork = trailNetworkList.find(n => n.id === s.trailNetworkId);
+            if (currentNetwork) currentNetwork.subscribed = true;
+        })
+    }
 
     return {
+        title: "Trail Network list",
         trailNetworkList
     };
 }) satisfies PageServerLoad;
@@ -46,7 +44,7 @@ export const actions = ({
         if (subscribe === undefined) return { message: 'Error saving' }
 
         const { user } = await locals.validateUser();
-        if (!user) throw redirect(302, 'login')
+        if (!user) throw redirect(302, '/login')
         if (!networkId) throw fail(400, { message: 'Error subscribing to network' });
 
         await toggleSubscriptionStatus(user?.userId, networkId.toString())

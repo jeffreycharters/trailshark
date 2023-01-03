@@ -28,7 +28,7 @@
 </svelte:head>
 
 <div class="min-h-full">
-	<nav class="navbar bg-neutral border-b text-neutral-content">
+	<nav class="navbar bg-neutral text-neutral-content">
 		<div class="flex-1">
 			<a href="/" class="btn btn-ghost normal-case text-2xl">Trailshark</a>
 		</div>

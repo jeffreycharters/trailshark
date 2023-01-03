@@ -20,3 +20,8 @@ export interface TrailNetworkWithTrailStatuses extends NetworkStatus {
         };
     })[];
 }
+
+export interface StatusCountAndSubscription {
+    statusCount?: number;
+    subscribed?: boolean;
+}

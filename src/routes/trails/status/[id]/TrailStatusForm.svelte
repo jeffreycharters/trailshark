@@ -17,7 +17,8 @@
 	};
 </script>
 
-<div class="border p-4 border-info rounded my-2">
+<div class="border p-4 bg-base-200 rounded my-2 w-full max-w-sm">
+	<div class="font-bold text-sm">Create trail-specific comments:</div>
 	<form method="post" bind:this={thisForm} on:change={validateAndSubmit}>
 		<select
 			class="select select-bordered w-full max-w-xs my-2"
@@ -47,7 +48,7 @@
 		<input type="hidden" name="network-status-id" value={statusId} />
 
 		<div class="text-right">
-			<button class="btn btn-sm btn-primary">+ Add</button>
+			<button class="btn btn-primary w-full max-w-xs my-2">+ Add</button>
 		</div>
 	</form>
 </div>

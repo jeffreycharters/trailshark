@@ -7,6 +7,8 @@
 
 	if (data.passwordChanged) {
 		addMessage({ alertLevel: 'success', message: 'Password changed! Please log in now' });
+	} else if (data.addStatus) {
+		addMessage({ alertLevel: 'success', message: 'Log in to add a status!' });
 	}
 </script>
 

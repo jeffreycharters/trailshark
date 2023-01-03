@@ -4,6 +4,7 @@
 	import { browser } from '$app/environment';
 	import Messages from '$lib/components/Messages.svelte';
 	import { getUser } from '@lucia-auth/sveltekit/client';
+	import { page } from '$app/stores';
 	let visible = false;
 	const closeModal = () => {
 		visible = false;
@@ -26,7 +27,7 @@
 			class="btn btn-outline bg-base-100 bg-opacity-40 btn-sm shadow drawer-button lg:hidden fixed bottom-2 right-2 background-blur-10"
 			>Menu</label
 		>
-		<div class="p-4">
+		<div class="">
 			<slot />
 		</div>
 	</div>
@@ -47,14 +48,17 @@
 			<li>
 				<a href="/trails/status" on:click={closeModal}>Add Status Update</a>
 			</li>
-			<div class="divider" />
-			<li>
-				<a href="/users/{$user?.username}" on:click={closeModal}>User Profile</a>
-			</li>
-			{#if $user?.isAdmin}
+
+			{#if $user}
+				<div class="divider" />
 				<li>
-					<a href="/adminc" on:click={closeModal}>Admin Shit</a>
+					<a href="/users/{$user?.username}" on:click={closeModal}>User Profile</a>
 				</li>
+				{#if $user?.isAdmin}
+					<li>
+						<a href="/adminc" on:click={closeModal}>Admin Shit</a>
+					</li>
+				{/if}
 			{/if}
 		</ul>
 	</div>

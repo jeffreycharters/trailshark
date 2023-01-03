@@ -4,11 +4,14 @@ import type { NetworkStatus } from "@prisma/client";
 import { fail, redirect, type Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "../$types";
 
-export const load: PageServerLoad = () => {
+export const load: PageServerLoad = async ({ locals }) => {
+    const session = await locals.validate();
+    if (!session) throw redirect(302, '/login?add-status=true');
     const allNetworks = getAllTrailNetworks();
     const trailStates = getTrailStates();
     const trailComments = getTrailComments();
     return {
+        title: "Add Network Status",
         trailNetworks: allNetworks,
         trailStates,
         trailComments
@@ -31,7 +34,9 @@ export const actions: Actions = {
         if (!network || !state) return fail(400, { ...basicReturn, message: 'Required field is missing!' });
         if (Number.isNaN(state)) return fail(400, { ...basicReturn, message: 'Error determining state' });
 
-        const { user } = await locals.validateUser()
+        const { user } = await locals.validateUser();
+        if (!user) return redirect(302, '/login')
+
 
         let newNetworkStatus: NetworkStatus;
         try {

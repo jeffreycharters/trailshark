@@ -3,8 +3,10 @@ import { getTrailsFor } from "$lib/server/api/trails";
 import { redirect, type Actions, fail } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async ({ locals, params }) => {
+export const load: PageServerLoad = async ({ locals, params, url }) => {
     const statusId = params.id;
+    const editingString = url.searchParams.get('editing');
+    const editing = editingString === 'true';
     const networkStatus = await getNetworkStatus(statusId);
     if (!networkStatus) throw redirect(302, '/trails/latest');
     const trailList = await getTrailsFor(networkStatus?.network.id);
@@ -22,7 +24,8 @@ export const load: PageServerLoad = async ({ locals, params }) => {
         isAuthor,
         trailList,
         comments,
-        existingTrailStatuses
+        existingTrailStatuses,
+        editing
     }
 }
 
