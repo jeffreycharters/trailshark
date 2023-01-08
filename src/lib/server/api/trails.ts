@@ -26,6 +26,21 @@ export const getLatestTrailNetworks = async (count: number, approvedOnly: boolea
     return latestTrails;
 }
 
+export const getUnusedNetworks = async () => {
+    const emptyNetworks = await prisma.trailNetwork.findMany({
+        where: {
+            trails: { none: {} },
+            statuses: {
+                none: {}
+            },
+            NetworkSubscription: {
+                none: {}
+            }
+        }
+    })
+    return emptyNetworks;
+}
+
 export const getTrailNetworkPage = async (perPage: number = 25, page: number = 1) => {
     const networks = await prisma.trailNetwork.findMany({
         skip: (page - 1) * perPage,
@@ -48,6 +63,23 @@ export const getAllTrailNetworks = async (approvedOnly: boolean = true) => {
         }
     })
     return trailNetworks;
+}
+
+export const removeTrailNetworkById = async (networkId: string) => {
+    await prisma.trailNetwork.update({
+        where: {
+            id: networkId,
+        },
+        data: {
+            userId: undefined
+        }
+    });
+    const deletedNetwork = await prisma.trailNetwork.delete({
+        where: {
+            id: networkId
+        }
+    })
+    return deletedNetwork;
 }
 
 export const toggleTrailNetworkApproval = async (isApproved: boolean, network: string) => {

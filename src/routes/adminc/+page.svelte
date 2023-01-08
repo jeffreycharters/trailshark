@@ -21,6 +21,10 @@
 		{
 			url: 'trails',
 			text: 'Approve Trails'
+		},
+		{
+			url: 'trails/networks/remove',
+			text: 'Remove Networks'
 		}
 	];
 </script>
