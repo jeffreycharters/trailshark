@@ -12,6 +12,7 @@ specifiers:
   '@typescript-eslint/eslint-plugin': ^5.46.1
   '@typescript-eslint/parser': ^5.46.1
   autoprefixer: ^10.4.13
+  cuid: ^2.1.8
   daisyui: ^2.45.0
   dotenv-cli: ^6.0.0
   eslint: ^8.29.0
@@ -39,6 +40,7 @@ dependencies:
   '@lucia-auth/adapter-prisma': 0.1.4_lucia-auth@0.3.4
   '@lucia-auth/sveltekit': 0.5.2_g5ifof6lrchr4plojaivbuqy4y
   '@prisma/client': 4.8.0_prisma@4.8.0
+  cuid: 2.1.8
   daisyui: 2.46.0_r4gnkvssmvyxmi2wmat5xbx36a
   dotenv-cli: 6.0.0
   googleapis: 110.0.0
@@ -906,6 +908,10 @@ packages:
     resolution: {integrity: sha512-/Tb/JcjK111nNScGob5MNtsntNM1aCNUDipB/TkwZFhyDrrE47SOx/18wF2bbjgc3ZzCSKW1T5nt5EbFoAz/Vg==}
     engines: {node: '>=4'}
     hasBin: true
+
+  /cuid/2.1.8:
+    resolution: {integrity: sha512-xiEMER6E7TlTPnDxrM4eRiC6TRgjNX9xzEZ5U/Se2YJKr7Mq4pJn/2XEHjl3STcSh96GmkHPcBXLES8M29wyyg==}
+    dev: false
 
   /daisyui/2.46.0_r4gnkvssmvyxmi2wmat5xbx36a:
     resolution: {integrity: sha512-7L+KMCADsAmZkJUIabgDSpqEF9+uVPvyJSkSieOpY2WKeDd2pvcELZMs/AKaKkB5gcrb9cPP9vFdLXeDFJj90g==}

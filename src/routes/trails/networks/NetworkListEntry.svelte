@@ -12,10 +12,10 @@
 <div class="my-4">
 	<div class="border my-2 p-3 rounded shadow flex justify-between items-center w-full">
 		<div class="flex w-full justify-between {$user ? 'flex-col' : 'items-center'}">
-			<div class="flex gap-2 font-semibold justify-start">
+			<div class="flex gap-2 font-semibold justify-start items-center">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
-					class="h-6 w-6 stroke-primary-focus"
+					class="h-6 w-6 stroke-primary-focus shrink-0"
 					viewBox="0 0 24 24"
 					stroke-width="2"
 					stroke="currentColor"
@@ -33,7 +33,9 @@
 						d="M5.824 15.995a3 3 0 0 1 -2.743 -3.69a2.998 2.998 0 0 1 .304 -4.833a3 3 0 0 1 4.615 -3.707a3 3 0 0 1 4.614 3.707a2.997 2.997 0 0 1 .305 4.833a3 3 0 0 1 -2.919 3.695h-4z"
 					/>
 				</svg>
-				{network.name}
+				<div>
+					{network.name}
+				</div>
 			</div>
 
 			<div class="text-sm text-base-content text-opacity-80 italic ml-4">
@@ -53,7 +55,7 @@
 				>
 					<input type="hidden" name="network-id" value={network.id} />
 					<input type="hidden" name="subscribe" value={network.subscribed ? false : true} />
-					<button class="btn btn-sm btn-{network.subscribed ? 'warning' : 'success'}"
+					<button class="btn btn-sm sm:btn-sm btn-{network.subscribed ? 'warning' : 'success'}"
 						>{network.subscribed ? 'Unsubscribe' : 'Subscribe'}</button
 					>
 				</form>

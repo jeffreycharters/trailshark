@@ -3,10 +3,10 @@
 	export let messages: AlertMessage[];
 </script>
 
-<div class="toast toast-start sm:toast-center sm:toast-bottom w-full max-w-lg">
+<div class="toast toast-center toast-bottom w-full max-w-lg">
 	{#each messages as message (message)}
 		<div class="alert text-sm alert-{message.alertLevel} w-full max-w-lg">
-			<div class="">
+			<div class="z-50">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					class="stroke-current flex-shrink-0 h-5 w-5"
@@ -24,3 +24,9 @@
 		</div>
 	{/each}
 </div>
+
+<style>
+	.toast {
+		z-index: 99 !important;
+	}
+</style>

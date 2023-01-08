@@ -4,7 +4,6 @@
 	import { browser } from '$app/environment';
 	import Messages from '$lib/components/Messages.svelte';
 	import { getUser } from '@lucia-auth/sveltekit/client';
-	import { page } from '$app/stores';
 	let visible = false;
 	const closeModal = () => {
 		visible = false;

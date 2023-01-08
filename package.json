@@ -48,6 +48,7 @@
 		"@lucia-auth/adapter-prisma": "^0.1.4",
 		"@lucia-auth/sveltekit": "^0.5.0",
 		"@prisma/client": "^4.7.1",
+		"cuid": "^2.1.8",
 		"daisyui": "^2.45.0",
 		"dotenv-cli": "^6.0.0",
 		"googleapis": "^110.0.0",
