@@ -1,25 +1,18 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import type { StatusCountAndSubscription } from '$lib/types';
+	import { getUser } from '@lucia-auth/sveltekit/client';
 	import type { TrailNetwork } from '@prisma/client';
 
 	export let network: TrailNetwork & StatusCountAndSubscription;
+
+	const user = getUser();
 </script>
 
 <div class="my-4">
-	{#if network.subscribed}
-		<form method="post" class="w-full max-w-sm">
-			<div class="border my-2 p-4 rounded shadow flex justify-between items-center">
-				{network.name} ({network.statusCount ?? '0'} Status{network.statusCount === 1 ? '' : 'es'})
-				<input type="hidden" name="network-id" value={network.id} />
-				<input type="hidden" name="subscribe" value={network.subscribed ? false : true} />
-				<button class="btn btn-sm btn-{network.subscribed ? 'warning' : 'success'}"
-					>{network.subscribed ? 'Unsubscribe' : 'Subscribe'}</button
-				>
-			</div>
-		</form>
-	{:else}
-		<div class="border my-2 p-3 rounded shadow flex justify-between items-center">
-			<div class="flex gap-2 font-semibold">
+	<div class="border my-2 p-3 rounded shadow flex justify-between items-center w-full">
+		<div class="flex w-full justify-between {$user ? 'flex-col' : 'items-center'}">
+			<div class="flex gap-2 font-semibold justify-start">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					class="h-6 w-6 stroke-primary-focus"
@@ -42,9 +35,29 @@
 				</svg>
 				{network.name}
 			</div>
-			<div class="text-sm text-base-content text-opacity-80 italic">
+
+			<div class="text-sm text-base-content text-opacity-80 italic ml-4">
 				{network.statusCount ?? '0'} Status{network.statusCount === 1 ? '' : 'es'}
 			</div>
 		</div>
-	{/if}
+		{#if $user}
+			<div>
+				<form
+					method="post"
+					class="w-full max-w-sm"
+					use:enhance={() => {
+						return async ({ result }) => {
+							if (result.status === 204) network.subscribed = !network.subscribed;
+						};
+					}}
+				>
+					<input type="hidden" name="network-id" value={network.id} />
+					<input type="hidden" name="subscribe" value={network.subscribed ? false : true} />
+					<button class="btn btn-sm btn-{network.subscribed ? 'warning' : 'success'}"
+						>{network.subscribed ? 'Unsubscribe' : 'Subscribe'}</button
+					>
+				</form>
+			</div>
+		{/if}
+	</div>
 </div>
