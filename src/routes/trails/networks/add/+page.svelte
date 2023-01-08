@@ -18,7 +18,7 @@
 				message: `Added <strong>${$page.form?.trail.name}</strong>`
 			});
 			const newTrail: TrailNetwork = $page.form?.trail;
-			latestNetworks = [newTrail, ...latestNetworks];
+			if (latestNetworks.length > 0) latestNetworks = [newTrail, ...latestNetworks];
 		}
 	}
 </script>
