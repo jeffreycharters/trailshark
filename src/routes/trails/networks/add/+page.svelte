@@ -1,14 +1,26 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
+	import { enhance } from '$app/forms';
+	import { page } from '$app/stores';
 	import LatestTrailNetworks from '$lib/components/LatestTrailNetworks.svelte';
 	import { addMessage } from '$lib/messages';
+	import type { TrailNetwork } from '@prisma/client';
 	import type { ActionData, PageData } from './$types';
 	export let form: ActionData;
 	export let data: PageData;
 	let { latestNetworks } = data;
 	let name = '';
 
-	if (form?.success && form?.trail)
-		addMessage({ alertLevel: 'success', message: `Added <strong>${form.trail.name}</strong>` });
+	$: {
+		if ($page.form?.trail) {
+			addMessage({
+				alertLevel: 'success',
+				message: `Added <strong>${$page.form?.trail.name}</strong>`
+			});
+			const newTrail: TrailNetwork = $page.form?.trail;
+			latestNetworks = [newTrail, ...latestNetworks];
+		}
+	}
 </script>
 
 <div class="lg:grid grid-cols-12 gap-4">
@@ -26,7 +38,7 @@
 
 		<div class="divider" />
 
-		<form method="post">
+		<form method="post" use:enhance>
 			<div class="form-control w-full max-w-md">
 				<label class="label" for="name">
 					<span class="label-text font-semibold">Trail Network name</span>
