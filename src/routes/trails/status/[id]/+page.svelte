@@ -17,7 +17,7 @@
 	});
 </script>
 
-<div>
+<div class="mx-auto max-w-sm md:max-w-lg">
 	{#if isAuthor && editing}
 		<div class="mb-8">
 			<h1 class={headingOneClasses}>Add trail updates</h1>
@@ -30,7 +30,7 @@
 	<NetworkStatus status={networkStatus} />
 
 	{#if isAuthor && !editing}
-		<button class="btn w-full max-w-sm" type="button" on:click={() => (editing = true)}
+		<button class="btn w-full max-w-sm md:max-w-md" type="button" on:click={() => (editing = true)}
 			>Edit this status</button
 		>
 	{/if}

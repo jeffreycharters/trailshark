@@ -14,7 +14,7 @@
 <a href="/trails/status/{status.id}">
 	<div
 		class="border border-{status.state.textColour} border-l-4 rounded shadow  bg-{status.state
-			.textColour} bg-opacity-5 p-4 w-full max-w-sm {vMargin}"
+			.textColour} bg-opacity-5 p-4 w-full max-w-sm md:max-w-md {vMargin}"
 	>
 		<div
 			class="flex flex-col justify-between items-baseline {status.trailStatuses.length > 0

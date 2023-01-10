@@ -55,7 +55,7 @@
 				</li>
 				{#if $user?.isAdmin}
 					<li>
-						<a href="/adminc" on:click={closeModal}>Admin Shit</a>
+						<a href="/adminc" on:click={closeModal}>Admin Stuff</a>
 					</li>
 				{/if}
 			{/if}
