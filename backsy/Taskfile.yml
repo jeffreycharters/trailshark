@@ -1,0 +1,10 @@
+version: "3"
+
+tasks:
+  gen:
+    run: when_changed
+    cmds:
+      - go generate ./ent
+      - go generate ./graph
+      - go run -mod=mod ./graphc/graphc.go
+      - cp ./schema.gql ../fronty/schema.gql
