@@ -20,18 +20,14 @@ const m_createUser = graphql(`
 export const actions = {
 	default: async (event) => {
 		const form = await superValidate(event.request, schema)
-		console.log("POST", form)
 
-		if (!form.valid) {
-			return fail(400, { form })
-		}
+		if (!form.valid) return fail(400, { form })
 
 		const res = await m_createUser.mutate({ input: form.data }, { event })
-		console.log(res)
 		if (res.errors) {
 			return fail(400, { form })
 		}
 
-		throw redirect(302, "/")
+		throw redirect(302, "/users")
 	}
 } satisfies Actions

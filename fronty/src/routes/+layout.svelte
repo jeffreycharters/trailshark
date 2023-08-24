@@ -1,15 +1,15 @@
 <script>
-	import { page } from '$app/stores'
-	import { onMount } from 'svelte'
-	import '../app.postcss'
+	import { page } from "$app/stores"
+	import { onMount } from "svelte"
+	import "../app.postcss"
 
 	onMount(() => {
-		document.body.classList.add('started')
+		document.body.classList.add("started")
 	})
 </script>
 
 <svelte:head>
-	<title>{$page.data.title ?? 'Beep beep'} // trail_shark</title>
+	<title>{$page.data.title ?? "Beep beep"} // trail_shark</title>
 </svelte:head>
 
 <div class="p-4">

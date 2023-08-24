@@ -1,0 +1,6 @@
+query UserList {
+	users {
+		id
+		email
+	}
+}
