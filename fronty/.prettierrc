@@ -1,0 +1,14 @@
+{
+	"useTabs": true,
+	"singleQuote": false,
+	"trailingComma": "none",
+	"semi": false,
+	"printWidth": 100,
+	"singleAttributePerLine": false,
+	"bracketSameLine": true,
+	"htmlWhitespaceSensitivity": "ignore",
+	"bracketSpacing": true,
+	"plugins": ["prettier-plugin-svelte", "prettier-plugin-tailwindcss"],
+	"pluginSearchDirs": ["."],
+	"overrides": [{ "files": "*.svelte", "options": { "parser": "svelte" } }]
+}
