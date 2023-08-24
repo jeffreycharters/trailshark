@@ -1,22 +1,22 @@
 # Where are all the schema files located? globs are supported eg  src/**/*.graphqls
 schema:
-  - ../graph/*.gql
+  - ./graph/*.gql
 
 # Where should the generated server code go?
 exec:
   layout: single-file
-  filename: ../graph/generated.go
+  filename: ./graph/generated.go
   package: graph
 
 # Where should any generated models go?
 model:
-  filename: ../graph/models_gen.go
+  filename: ./graph/models_gen.go
   package: graph
 
 # Where should the resolver implementations go?
 resolver:
   layout: follow-schema
-  dir: ../graph
+  dir: ./graph
 
 # gqlgen will search for any type names in the schema in these go packages
 # if they match it will use them, otherwise it will generate them.

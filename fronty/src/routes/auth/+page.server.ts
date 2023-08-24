@@ -1,23 +1,37 @@
 import { superValidate } from "sveltekit-superforms/server"
 import type { Actions } from "./$types"
 import { z } from "zod"
-import { fail } from "@sveltejs/kit"
+import { fail, redirect } from "@sveltejs/kit"
+import { graphql } from "$houdini"
 
 const schema = z.object({
 	email: z.string().email()
 })
 
+const m_createUser = graphql(`
+	mutation CreateUser($input: NewUserInput!) {
+		createUser(input: $input) {
+			id
+			email
+		}
+	}
+`)
+
 export const actions = {
-	default: async ({ request }) => {
-		const form = await superValidate(request, schema)
+	default: async (event) => {
+		const form = await superValidate(event.request, schema)
 		console.log("POST", form)
 
 		if (!form.valid) {
 			return fail(400, { form })
 		}
 
-		// TODO: houdini this
+		const res = await m_createUser.mutate({ input: form.data }, { event })
+		console.log(res)
+		if (res.errors) {
+			return fail(400, { form })
+		}
 
-		return { form }
+		throw redirect(302, "/")
 	}
 } satisfies Actions
