@@ -1,0 +1,12 @@
+:3320 {
+	@frontend {
+		not path /api/*
+	}
+
+	@backend {
+		path /api/*
+	}
+
+	reverse_proxy @frontend localhost:3321
+	reverse_proxy @backend localhost:3322
+}

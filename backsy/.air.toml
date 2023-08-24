@@ -1,0 +1,16 @@
+root = "."
+tmp_dir = "../tmp"
+
+[build]
+  cmd = "go build -o ./tmp/main cmd/main.go"
+  send_interrupt = true
+  delay = 100
+
+  include_ext = ["go", "gql"]
+  include_file = [".env", ".env.dev", ".env.dev.local"]
+
+  exclude_unchanged = true
+
+[misc]
+  # Delete tmp directory on exit
+  clean_on_exit = true
