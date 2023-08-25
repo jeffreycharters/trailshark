@@ -3,5 +3,6 @@
 package graph
 
 type NewUserInput struct {
-	Email string `json:"email"`
+	Username string `json:"username"`
+	Email    string `json:"email"`
 }

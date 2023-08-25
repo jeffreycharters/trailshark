@@ -1,6 +1,9 @@
 package graph
 
-import "github.com/jeffreycharters/trailshark/backsy/ent"
+import (
+	"github.com/99designs/gqlgen/graphql/handler"
+	"github.com/jeffreycharters/trailshark/backsy/ent"
+)
 
 // This file will not be regenerated automatically.
 //
@@ -8,4 +11,14 @@ import "github.com/jeffreycharters/trailshark/backsy/ent"
 
 type Resolver struct {
 	DB *ent.Client
+}
+
+func NewResolver(db *ent.Client) *Resolver {
+	return &Resolver{
+		DB: db,
+	}
+}
+
+func NewGraphQLServer(db *ent.Client) *handler.Server {
+	return handler.NewDefaultServer(NewExecutableSchema(Config{Resolvers: NewResolver(db)}))
 }

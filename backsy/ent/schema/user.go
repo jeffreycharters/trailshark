@@ -1,6 +1,8 @@
 package schema
 
 import (
+	"regexp"
+
 	"entgo.io/ent"
 	"entgo.io/ent/schema/field"
 	"entgo.io/ent/schema/mixin"
@@ -17,8 +19,16 @@ func (User) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("id").
 			GoType(ulid.ID("")).
-			DefaultFunc(ulid.Make),
-		field.String("email"),
+			DefaultFunc(ulid.Make).
+			Immutable().
+			Unique(),
+		field.String("username").
+			Match(regexp.MustCompile(`^[a-zA-Z0-9_]+$`)).
+			MinLen(2).
+			MaxLen(20).
+			Unique(),
+		field.String("email").
+			Unique(),
 	}
 }
 

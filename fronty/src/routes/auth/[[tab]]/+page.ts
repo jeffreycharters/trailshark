@@ -1,15 +1,11 @@
 import type { PageLoad } from "./$types"
-import { z } from "zod"
 import { superValidate } from "sveltekit-superforms/server"
-
-const schema = z.object({
-	email: z.string().email()
-})
+import { schema } from "./schema"
 
 export const load = (async () => {
 	const form = await superValidate(schema)
 	return {
-		title: "create user",
+		title: "authenticate thyself",
 		form
 	}
 }) satisfies PageLoad

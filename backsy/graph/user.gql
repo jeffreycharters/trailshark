@@ -1,5 +1,6 @@
 type User {
   id: ID!
+  username: String!
   email: String!
 }
 
@@ -9,6 +10,7 @@ type Query {
 }
 
 input NewUserInput {
+  username: String!
   email: String!
 }
 

@@ -6,16 +6,51 @@ package graph
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/jeffreycharters/trailshark/backsy/ent"
+	"github.com/jeffreycharters/trailshark/backsy/ent/user"
 	"github.com/jeffreycharters/trailshark/backsy/pkg/ulid"
+	"golang.org/x/exp/slog"
 )
 
 // CreateUser is the resolver for the createUser field.
 func (r *mutationResolver) CreateUser(ctx context.Context, input NewUserInput) (*ent.User, error) {
-	return r.DB.User.Create().
+	emailExists, err := r.DB.User.Query().
+		Where(
+			user.Email(input.Email),
+		).Exist(ctx)
+	if ent.MaskNotFound(err) != nil {
+		slog.Error("error querying email existence", "error", err.Error())
+		return nil, fmt.Errorf("internal server error")
+	}
+
+	if emailExists {
+		return nil, fmt.Errorf("email already exists")
+	}
+
+	usernameExists, err := r.DB.User.Query().
+		Where(user.UsernameEqualFold(input.Username)).Exist(ctx)
+	if ent.MaskNotFound(err) != nil {
+		slog.Error("error querying users", "error", err.Error())
+		return nil, fmt.Errorf("internal server error")
+	}
+
+	if usernameExists {
+		return nil, fmt.Errorf("username already exists")
+	}
+
+	user, err := r.DB.User.Create().
 		SetEmail(input.Email).
+		SetUsername(input.Username).
 		Save(ctx)
+
+	if err != nil {
+		slog.Error("error creating user", "error", err.Error())
+		return nil, fmt.Errorf("internal server error")
+	}
+
+	return user, nil
 }
 
 // User is the resolver for the user field.

@@ -15,7 +15,10 @@
         "test:unit": "vitest"
     },
     "devDependencies": {
+        "@mobily/ts-belt": "^3.13.1",
         "@playwright/test": "^1.37.1",
+        "@steeze-ui/heroicons": "^2.2.3",
+        "@steeze-ui/svelte-icon": "^1.5.0",
         "@sveltejs/adapter-auto": "^2.1.0",
         "@sveltejs/kit": "^1.23.0",
         "@typescript-eslint/eslint-plugin": "^6.4.1",
@@ -25,6 +28,8 @@
         "eslint-config-prettier": "^9.0.0",
         "eslint-plugin-svelte": "^2.33.0",
         "eslint-plugin-unused-imports": "^3.0.0",
+        "houdini": "^1.2.8",
+        "houdini-svelte": "^1.2.8",
         "postcss": "^8.4.28",
         "postcss-load-config": "^4.0.1",
         "prettier": "^3.0.2",
@@ -38,13 +43,10 @@
         "typescript": "^5.1.6",
         "vite": "^4.4.9",
         "vitest": "^0.34.2",
-        "zod": "^3.22.2",
-        "houdini": "^1.2.8",
-        "houdini-svelte": "^1.2.8"
+        "zod": "^3.22.2"
     },
     "type": "module",
     "dependencies": {
-        "@tabler/icons-svelte": "^2.32.0",
         "bits-ui": "^0.0.33",
         "clsx": "^2.0.0",
         "lucide-svelte": "^0.268.0",

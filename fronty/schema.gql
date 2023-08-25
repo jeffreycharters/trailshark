@@ -2,6 +2,7 @@ type Mutation {
 	createUser(input: NewUserInput!): User!
 }
 input NewUserInput {
+	username: String!
 	email: String!
 }
 type Query {
@@ -10,5 +11,6 @@ type Query {
 }
 type User {
 	id: ID!
+	username: String!
 	email: String!
 }

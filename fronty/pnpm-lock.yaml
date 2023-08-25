@@ -5,9 +5,6 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
-  '@tabler/icons-svelte':
-    specifier: ^2.32.0
-    version: 2.32.0(svelte@4.2.0)
   bits-ui:
     specifier: ^0.0.33
     version: 0.0.33(@sveltejs/kit@1.23.0)(svelte@4.2.0)
@@ -28,9 +25,18 @@ dependencies:
     version: 1.0.6(tailwindcss@3.3.3)
 
 devDependencies:
+  '@mobily/ts-belt':
+    specifier: ^3.13.1
+    version: 3.13.1
   '@playwright/test':
     specifier: ^1.37.1
     version: 1.37.1
+  '@steeze-ui/heroicons':
+    specifier: ^2.2.3
+    version: 2.2.3
+  '@steeze-ui/svelte-icon':
+    specifier: ^1.5.0
+    version: 1.5.0(svelte@4.2.0)
   '@sveltejs/adapter-auto':
     specifier: ^2.1.0
     version: 2.1.0(@sveltejs/kit@1.23.0)
@@ -514,6 +520,11 @@ packages:
       svelte: 4.2.0
     dev: false
 
+  /@mobily/ts-belt@3.13.1:
+    resolution: {integrity: sha512-K5KqIhPI/EoCTbA6CGbrenM9s41OouyK8A03fGJJcla/zKucsgLbz8HNbeseoLarRPgyWJsUyCYqFhI7t3Ra9Q==}
+    engines: {node: '>= 10.*'}
+    dev: true
+
   /@nodelib/fs.scandir@2.1.5:
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
     engines: {node: '>= 8'}
@@ -556,6 +567,18 @@ packages:
 
   /@sinclair/typebox@0.27.8:
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==}
+    dev: true
+
+  /@steeze-ui/heroicons@2.2.3:
+    resolution: {integrity: sha512-bv4YK375U9TDS50SmJ5VdFy2UmMhgKbJCCbo6IUU3qs2luEj2VX6sQoDy96j8AIKttxMd62ih1j0lZj7CTjIfA==}
+    dev: true
+
+  /@steeze-ui/svelte-icon@1.5.0(svelte@4.2.0):
+    resolution: {integrity: sha512-Y0S7Qk2kO6byzOlD5SQGbOF2ZaKXJgfTkH78QUPcq579wiWMQJ5H14zL4XwtsPJ0DfkoL5qa3WaIdYkWb9A6AA==}
+    peerDependencies:
+      svelte: ^4.0.0
+    dependencies:
+      svelte: 4.2.0
     dev: true
 
   /@sveltejs/adapter-auto@2.1.0(@sveltejs/kit@1.23.0):
@@ -702,19 +725,6 @@ packages:
       vitefu: 0.2.4(vite@4.4.9)
     transitivePeerDependencies:
       - supports-color
-
-  /@tabler/icons-svelte@2.32.0(svelte@4.2.0):
-    resolution: {integrity: sha512-hqJnogb6uRuVdq6iVgaItR2+VRixtGgPHiLh/TSx7R1Uljz8VwL+CLibaAJkg53KZBhlTrq3nqpUvoAPJBJhPw==}
-    peerDependencies:
-      svelte: '>=3 <5'
-    dependencies:
-      '@tabler/icons': 2.32.0
-      svelte: 4.2.0
-    dev: false
-
-  /@tabler/icons@2.32.0:
-    resolution: {integrity: sha512-w1oNvrnqFipoBEy2/0X4/IHo2aLsijuz4QRi/HizxqiaoMfmWG5X2DpEYTw9WnGvFmixpu/rtQsQAr7Wr0Mc2w==}
-    dev: false
 
   /@types/braces@3.0.2:
     resolution: {integrity: sha512-U5tlMYa0U/2eFTmJgKcPWQOEICP173sJDa6OjHbj5Tv+NVaYcrq2xmdWpNXOwWYGwJu+jER/pfTLdoQ31q8PzA==}
